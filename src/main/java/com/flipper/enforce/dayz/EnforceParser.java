@@ -1,21 +1,19 @@
 package com.flipper.enforce.dayz;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipper.enforce.dayz.enums.PrimitiveTypes;
 import com.flipper.enforce.dayz.enums.VariableModifiers;
 import com.flipper.enforce.dayz.objects.EnforceFunction;
 import com.flipper.enforce.dayz.objects.EnforceVariable;
-import com.flipper.enforce.dayz.objects.clazz.EnforceClass;
 import com.flipper.enforce.dayz.objects.clazz.EnforceClassDefinition;
 
 import java.io.*;
 import java.util.*;
 
 public class EnforceParser {
-    private File inputFile;
-    private BufferedReader inputFileReader;
+    private final File inputFile;
+    private final RandomAccessFile inputFileReader;
 
-    private List<EnforceClassDefinition> classDefinitions = new ArrayList<>();
+    private List<EnforceClassDefinition> classDefinitions;
 
     private String currentLine;
     private int currentLineNumber;
@@ -23,10 +21,20 @@ public class EnforceParser {
 
     public EnforceParser(File file) throws Exception {
         this.inputFile = file;
-        this.inputFileReader = new BufferedReader(new FileReader(inputFile));
+        this.inputFileReader = new RandomAccessFile(inputFile, "r");
         this.currentLineNumber = 0;
 
-        scanForClassDefinitions();
+        this.classDefinitions = scanForClassDefinitions();
+        for(EnforceClassDefinition c : classDefinitions){
+            System.out.println(c.getClassName());
+            System.out.println(c.getDefinitionStartLn());
+            System.out.println(c.getDefinitionStartCol());
+            System.out.println(c.getDefinitionStopLn());
+            System.out.println(c.getDefinitionStopCol());
+
+            System.out.println("Next line in main reader:" + inputFileReader.readLine());
+        }
+
 
     }
 
@@ -66,7 +74,7 @@ public class EnforceParser {
 
     public List<EnforceClassDefinition> scanForClassDefinitions() throws Exception {
         List<EnforceClassDefinition> returnList = new ArrayList<>();
-        inputFileReader.reset();
+        inputFileReader.seek(0);
 
         this.currentLine = inputFileReader.readLine();
         this.currentLineNumber = 0;
@@ -111,6 +119,7 @@ public class EnforceParser {
             this.currentLine = inputFileReader.readLine();
             this.currentLineNumber++;
         }
+        inputFileReader.seek(0);
         return returnList;
     }
 
@@ -303,34 +312,37 @@ public class EnforceParser {
     }
 
     private int[] findEndBraceLocation(int startBraceLine, int startBraceCol) throws Exception {
-        BufferedReader tempReader = this.inputFileReader;
-        tempReader.reset();
-        tempReader.skip(startBraceLine + 1);
+        RandomAccessFile tempReader = this.inputFileReader;
+        tempReader.seek(0);
+
+        for(int i = 0; i < startBraceLine; i++) tempReader.readLine();
+        //tempReader.skip(startBraceLine + 1);
 
         String tempLine = tempReader.readLine().substring(startBraceCol);//Maybe substring(startBraceCol - 1)
                                                                          //Or maybe even substring(startBraceCol + 1)
                                                                          //All I know is I'm too high to care or test it
 
-        int nestedBraces = 0, tempLineNumber = 0;
+        int nestedBraces = 1, tempLineNumber = (startBraceLine + 1);
 
         while (tempLine != null) {
-            while(!currentLine.contains("{") && !currentLine.contains("{")) {
+            tempLine = tempLine.replaceAll("\\t", "");
+            if(!tempLine.contains("{") && !tempLine.contains("}")){
                 tempLineNumber++;
                 tempLine = tempReader.readLine();
+                continue;
             }
 
             int tempCharNumber = 0;
             for(char c : tempLine.toCharArray()) {
-                switch (c) {
-                    case '{':
-                        if(nestedBraces == 0) return new int[] {tempLineNumber, tempCharNumber};
-                        nestedBraces++;
-                        continue;
-                    case '}':
-                        nestedBraces--;
-                        continue;
-                    default:
-                        continue;
+                if(c == '{') {
+                    nestedBraces++;
+                    tempCharNumber++;
+                } else if(c == '}') {
+                    nestedBraces--;
+                    if(nestedBraces == 1) return new int[] {tempLineNumber, tempCharNumber};
+                    tempCharNumber++;
+                } else {
+                    tempCharNumber++;
                 }
             }
 
