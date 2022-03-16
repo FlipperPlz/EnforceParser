@@ -8,12 +8,27 @@ import com.flipper.enforce.dayz.objects.EnforceVariable;
 import com.flipper.enforce.dayz.objects.clazz.EnforceClass;
 import com.flipper.enforce.dayz.objects.clazz.EnforceClassDefinition;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 public class EnforceParser {
+    private File inputFile;
+    private BufferedReader inputFileReader;
+
+    private List<EnforceClassDefinition> classDefinitions = new ArrayList<>();
+
+    private String currentLine;
+    private int currentLineNumber;
+
+
+    public EnforceParser(File file) throws Exception {
+        this.inputFile = file;
+        this.inputFileReader = new BufferedReader(new FileReader(inputFile));
+        this.currentLineNumber = 0;
+
+        scanForClassDefinitions();
+
+    }
 
     public static Object parseEnforceFile(File file) {
         Set<String> linesInFile = new HashSet<>();
@@ -29,19 +44,19 @@ public class EnforceParser {
 
         //TODO: Parse global functions and variables
 
-        Set<EnforceClassDefinition> classDefinitions = scanForClassDefinitions(linesInFile);
-        List<EnforceFunction> allFunctionDefinitions = scanForFunctionDefinitions(linesInFile, classDefinitions);
+        //Set<EnforceClassDefinition> classDefinitions = scanForClassDefinitions1(linesInFile);
+        //List<EnforceFunction> allFunctionDefinitions = scanForFunctionDefinitions(linesInFile, classDefinitions);
 
-        List<Integer> linesContainingFunctions = new ArrayList<>();
+        //List<Integer> linesContainingFunctions = new ArrayList<>();
 
-        for(EnforceFunction function : allFunctionDefinitions) for (int i = function.getStartBodyLn(); i <= function.getStopBodyLn(); i++) linesContainingFunctions.add(i);
+        //for(EnforceFunction function : allFunctionDefinitions) for (int i = function.getStartBodyLn(); i <= function.getStopBodyLn(); i++) linesContainingFunctions.add(i);
 
-        List<EnforceVariable> allVariableDeclarations = scanForAllVariableDeclarations(linesInFile, classDefinitions, linesContainingFunctions);
+        //List<EnforceVariable> allVariableDeclarations = scanForAllVariableDeclarations(linesInFile, classDefinitions, linesContainingFunctions);
 
-        EnforceClass clazz = new EnforceClass(classDefinitions.stream().toList(), allVariableDeclarations, allFunctionDefinitions);
+        //EnforceClass clazz = new EnforceClass(classDefinitions.stream().toList(), allVariableDeclarations, allFunctionDefinitions);
         try {
             System.out.println("Parsed: \n");
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(clazz));
+            //System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(clazz));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,43 +64,54 @@ public class EnforceParser {
         return new Object();
     }
 
-    public static Set<EnforceClassDefinition> scanForClassDefinitions(Set<String> linesInFile) {
-        Set<EnforceClassDefinition> returnSet = new HashSet<>();
-        int iLine = 0;
-        for (String line : linesInFile) {
-            iLine++;
-            if (line.contains("class")) {
-                StringTokenizer lineTokenizer = new StringTokenizer(line);
-                String word = lineTokenizer.nextToken();
+    public List<EnforceClassDefinition> scanForClassDefinitions() throws Exception {
+        List<EnforceClassDefinition> returnList = new ArrayList<>();
+        inputFileReader.reset();
 
-                if (word.equals("modded") && lineTokenizer.nextToken().equalsIgnoreCase("class")) {
-                    var className = (lineTokenizer.nextToken());
-                    var moddedClass = true;
-                    final int startLine = iLine;
-                    final int startCol = line.indexOf('{');
+        this.currentLine = inputFileReader.readLine();
+        this.currentLineNumber = 0;
+        while (currentLine != null) {
 
-                    int[] stopLocation = getEndingBraceLocation(linesInFile, startLine, startCol);
+            if(this.currentLine.contains("class")) {
+                StringTokenizer lineTokenizer = new StringTokenizer(currentLine);
+                String currentWord = lineTokenizer.nextToken();
+                if (currentWord.equals("modded") && lineTokenizer.nextToken().equalsIgnoreCase("class")) {
+                    String className = (lineTokenizer.nextToken());
+                    boolean moddedClass = true;
 
-                    final int stopLine = stopLocation[0];
-                    final int stopCol = stopLocation[1];
+                    while (!currentLine.contains("{")) nextLine();
 
-                    returnSet.add(new EnforceClassDefinition(className, moddedClass, startLine, startCol, stopLine, stopCol));
-                } else if (word.equals("class")) {
-                    var className = (lineTokenizer.nextToken());
-                    var moddedClass = false;
-                    final var startLine = iLine;
-                    final var startCol = line.indexOf('{');
+                    final int startLine = currentLineNumber;
+                    final int startCol = currentLine.indexOf('{');
 
-                    var stopLocation = getEndingBraceLocation(linesInFile, startLine, startCol);
+                    int[] endLocation = findEndBraceLocation(startLine, startCol);
 
-                    final var stopLine = stopLocation[0];
-                    final var stopCol = stopLocation[1];
+                    final int stopLine = endLocation[0];
+                    final int stopCol = endLocation[1];
 
-                    returnSet.add(new EnforceClassDefinition(className, moddedClass, startLine, startCol, stopLine, stopCol));
+                    returnList.add(new EnforceClassDefinition(className, moddedClass, startLine, startCol, stopLine, stopCol));
+
+                } else if (currentWord.equals("class")) {
+                    String className = (lineTokenizer.nextToken());
+                    boolean moddedClass = false;
+
+                    while (!currentLine.contains("{")) nextLine();
+
+                    final int startLine = currentLineNumber;
+                    final int startCol = currentLine.indexOf('{');
+
+                    int[] endLocation = findEndBraceLocation(startLine, startCol);
+
+                    final int stopLine = endLocation[0];
+                    final int stopCol = endLocation[1];
+                    returnList.add(new EnforceClassDefinition(className, moddedClass, startLine, startCol, stopLine, stopCol));
                 }
             }
+
+            this.currentLine = inputFileReader.readLine();
+            this.currentLineNumber++;
         }
-        return returnSet.isEmpty() ? null : returnSet;
+        return returnList;
     }
 
     private static List<EnforceFunction> scanForFunctionDefinitions(Set<String> linesInFile, Set<EnforceClassDefinition> classDefinitions) {
@@ -269,6 +295,49 @@ public class EnforceParser {
     private static String[] getWordsInLine(String line) {
         String[] splitLine = (line.split("//")[0]).trim().replaceAll("="," =").split(" ");
         return Arrays.stream(splitLine).filter(value -> value != null && value.length() > 0).toArray(size -> new String[size]);
+    }
+
+    private void nextLine() throws Exception {
+        this.currentLine = inputFileReader.readLine();
+        this.currentLineNumber++;
+    }
+
+    private int[] findEndBraceLocation(int startBraceLine, int startBraceCol) throws Exception {
+        BufferedReader tempReader = this.inputFileReader;
+        tempReader.reset();
+        tempReader.skip(startBraceLine + 1);
+
+        String tempLine = tempReader.readLine().substring(startBraceCol);//Maybe substring(startBraceCol - 1)
+                                                                         //Or maybe even substring(startBraceCol + 1)
+                                                                         //All I know is I'm too high to care or test it
+
+        int nestedBraces = 0, tempLineNumber = 0;
+
+        while (tempLine != null) {
+            while(!currentLine.contains("{") && !currentLine.contains("{")) {
+                tempLineNumber++;
+                tempLine = tempReader.readLine();
+            }
+
+            int tempCharNumber = 0;
+            for(char c : tempLine.toCharArray()) {
+                switch (c) {
+                    case '{':
+                        if(nestedBraces == 0) return new int[] {tempLineNumber, tempCharNumber};
+                        nestedBraces++;
+                        continue;
+                    case '}':
+                        nestedBraces--;
+                        continue;
+                    default:
+                        continue;
+                }
+            }
+
+            tempLineNumber++;
+            tempLine = tempReader.readLine();
+        }
+        return null;
     }
 
     private static int[] getEndingBraceLocation(Set<String> lines, int startingBraceLine, int startingBraceCol) {
