@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnforceParser.Core", "EnforceParser.Core\EnforceParser.Core.csproj", "{6B6CC0BF-A1E9-4688-A23B-906E066C4B1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnforceParser.Tests", "EnforceParser.Tests\EnforceParser.Tests.csproj", "{01D161BC-8F7B-4C6A-8272-2F9B2849C86C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B6CC0BF-A1E9-4688-A23B-906E066C4B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6CC0BF-A1E9-4688-A23B-906E066C4B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6CC0BF-A1E9-4688-A23B-906E066C4B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6CC0BF-A1E9-4688-A23B-906E066C4B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D161BC-8F7B-4C6A-8272-2F9B2849C86C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D161BC-8F7B-4C6A-8272-2F9B2849C86C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D161BC-8F7B-4C6A-8272-2F9B2849C86C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D161BC-8F7B-4C6A-8272-2F9B2849C86C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
