@@ -313,6 +313,18 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOptionalParameter([NotNull] EnforceParser.OptionalParameterContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.statementSingleOrBlock"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

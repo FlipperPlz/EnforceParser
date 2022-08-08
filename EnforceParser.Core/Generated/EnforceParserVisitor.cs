@@ -171,6 +171,12 @@ public interface IEnforceParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitOptionalParameter([NotNull] EnforceParser.OptionalParameterContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EnforceParser.statementSingleOrBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

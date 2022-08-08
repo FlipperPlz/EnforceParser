@@ -262,6 +262,16 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitOptionalParameter([NotNull] EnforceParser.OptionalParameterContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.statementSingleOrBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

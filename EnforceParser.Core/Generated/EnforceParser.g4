@@ -1,9 +1,11 @@
 parser grammar EnforceParser;
 @header {namespace EnforceParser.Core.Generated;}
 options { tokenVocab=EnforceLexer; }
+
 computationalStart: (globalDeclaration | typeDeclaration | typedefDeclaration)* EOF;
 globalDeclaration:  variableDeclaration | functionDeclaration;
 typeDeclaration: classDeclaration | enumDeclaration | typedefDeclaration;
+
 //SECTION: Variables & Functions
 varAndFunctionBlock: LCurly (functionDeclaration | variableDeclaration)* RCurly;
 variableDeclaration: annotation? variableModifier* variableType=identifier typeList? variableDeclarators Semicolon;
@@ -12,11 +14,13 @@ variableDeclarator: variableName=identifier (LSBracket arrayLength=expression? R
 functionDeclaration: annotation? functionModifier* returnType=identifier typeList? deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
 functionParameters: LParenthesis (functionParameter (Comma functionParameter)*)? RParenthesis;
 functionParameter: variableModifier* parameterType=identifier variableDeclarator;
+
 //SECTION: Classes & Enums
 classDeclaration: annotation? typeModifer* CLASS classname=identifier superclass=typeExtension_Child? classBody=varAndFunctionBlock Semicolon?; 
 enumDeclaration: annotation? typeModifer* ENUM enumname=identifier superenum=typeExtension_Child? enumBody Semicolon?;
 enumBody: LCurly (enumValue ((Comma|WHITESPACES) enumValue)*)? RCurly;
 enumValue: itemname=identifier (Assign itemValue=primaryExpression)?;
+
 //SECTION: Expressions & Statements
 expression:  primaryExpression                                                            |
              THIS                                                                         |
@@ -61,7 +65,7 @@ primaryExpression:  esFunction    = functionCall              |
                     esNull        = literalNull               |
                     esVariable    = identifier                |
 //                  esGeneric     = identifier typeList       |
-                    esArrayIndex  = identifier arrayIndex     ;
+                    esArrayIndex  = arrayIndexExpression      ;
 objectCreation: NEW variableModifier* objectName=identifier typeList? functionCallParameters?;
 functionCall: identifier functionCallParameters;
 parenthesisedExpression: LParenthesis expression RParenthesis;
@@ -69,6 +73,8 @@ functionCallParameters: LParenthesis functionCallParameterList? RParenthesis;
 functionCallParameterList: functionCallParameter (Comma functionCallParameter)*;
 functionCallParameter: expression | optionalParameter;
 optionalParameter: argumentName=identifier Colon argumentValue=expression;
+arrayIndexExpression: identifier arrayIndex;
+
 //Notice: Statements go under here
 statementSingleOrBlock: statement | statementBlock;
 statementBlock: emptyBlock | LCurly statement* RCurly;
@@ -96,6 +102,7 @@ switchStatement: SWITCH parenthesisedExpression LCurly switchBlockStatementGroup
 returnStatement: RETURN expression? Semicolon;
 breakStatement: BREAK Semicolon;
 continueStatement: CONTINUE Semicolon;
+
 //SECTION: Common Rules
 forControl: forInit=statement forCondition=expression Semicolon forIteration=expression Semicolon*;
 typeExtension_Child: extends=(EXTENDS | Colon) classname=identifier;
@@ -118,6 +125,7 @@ keyword: CLASS | ENUM | SWITCH | EXTENDS | CONST | BREAK | CASE | ELSE | FOR | C
 typeList: Less genericType (Comma genericType)* Greater;
 genericType: variableModifier* type=identifier;
 annotation: LSBracket functionCall RSBracket;
+
 //SECTION: Modifiers
 typeModifer: MODDED | SEALED;
 variableModifier: PRIVATE |

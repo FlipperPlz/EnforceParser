@@ -266,6 +266,16 @@ public partial class EnforceParserBaseVisitor<Result> : AbstractParseTreeVisitor
 	/// <return>The visitor result.</return>
 	public virtual Result VisitOptionalParameter([NotNull] EnforceParser.OptionalParameterContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EnforceParser.statementSingleOrBlock"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
