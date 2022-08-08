@@ -28,7 +28,7 @@ expression:  primaryExpression                                                  
              expression op=Dot
                 (
                  esVariable    = identifier            |
-                 esArrayIndex  = identifier arrayIndex |
+                 esArrayIndex  = arrayIndexExpression  |
                  esFunction    = functionCall
                 )                                                                         |
              objectCreation                                                               |

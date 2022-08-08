@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using EnforceParser.Core.Factories;
+using EnforceParser.Core.Models.Expression.Primary.Primitives;
 
-namespace EnforceParser.Core.Models.Expression.Primary.Primitives; 
+namespace EnforceParser.Core.Models.Expression.Primary; 
 
 public class EsArrayIndex : IEsPrimaryExpression, IEsDeserializable<Generated.EnforceParser.ArrayIndexExpressionContext> {
     public EsVariable Array { get; set; }

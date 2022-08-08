@@ -2,8 +2,9 @@
 using System.Runtime.Serialization;
 using System.Text;
 using EnforceParser.Core.Factories;
+using EnforceParser.Core.Models.Expression.Primary.Primitives;
 
-namespace EnforceParser.Core.Models.Expression.Primary.Primitives; 
+namespace EnforceParser.Core.Models.Expression.Primary; 
 
 public class EsFunctionCall : IEsPrimaryExpression, IEsDeserializable<Generated.EnforceParser.FunctionCallContext> {
     public EsVariable FunctionName { get; set; }

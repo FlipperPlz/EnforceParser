@@ -1,4 +1,4 @@
-﻿namespace EnforceParser.Core.Models.Expression.Primary.Primitives; 
+﻿namespace EnforceParser.Core.Models.Expression.Primary; 
 
 public class EsNullType : IEsPrimaryExpression, IEsDeserializable<Generated.EnforceParser.LiteralNullContext> {
     public EsNullType() { }

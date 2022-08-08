@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using EnforceParser.Core.Factories;
 
-namespace EnforceParser.Core.Models.Expression.Primary.Primitives; 
+namespace EnforceParser.Core.Models.Expression.Primary; 
 
 public class EsParenthesisedExpression : IEsDeserializable<Generated.EnforceParser.ParenthesisedExpressionContext> {
     public IEsExpression Expression { get; set; }
