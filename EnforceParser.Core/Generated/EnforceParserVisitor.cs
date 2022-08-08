@@ -297,6 +297,30 @@ public interface IEnforceParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLiteralString([NotNull] EnforceParser.LiteralStringContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.literalInteger"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralInteger([NotNull] EnforceParser.LiteralIntegerContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.literalNull"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralNull([NotNull] EnforceParser.LiteralNullContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.literalFloat"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralFloat([NotNull] EnforceParser.LiteralFloatContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.literalBoolean"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralBoolean([NotNull] EnforceParser.LiteralBooleanContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EnforceParser.foreachVariable"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

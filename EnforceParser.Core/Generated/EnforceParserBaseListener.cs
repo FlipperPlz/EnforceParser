@@ -565,6 +565,54 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLiteralString([NotNull] EnforceParser.LiteralStringContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.literalInteger"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralInteger([NotNull] EnforceParser.LiteralIntegerContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.literalInteger"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralInteger([NotNull] EnforceParser.LiteralIntegerContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.literalNull"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralNull([NotNull] EnforceParser.LiteralNullContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.literalNull"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralNull([NotNull] EnforceParser.LiteralNullContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.literalFloat"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralFloat([NotNull] EnforceParser.LiteralFloatContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.literalFloat"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralFloat([NotNull] EnforceParser.LiteralFloatContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.literalBoolean"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLiteralBoolean([NotNull] EnforceParser.LiteralBooleanContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.literalBoolean"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLiteralBoolean([NotNull] EnforceParser.LiteralBooleanContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.foreachVariable"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

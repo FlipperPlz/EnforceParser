@@ -13,7 +13,7 @@ functionDeclaration: annotation? functionModifier* returnType=identifier typeLis
 functionParameters: LParenthesis (functionParameter (Comma functionParameter)*)? RParenthesis;
 functionParameter: variableModifier* parameterType=identifier variableDeclarator;
 //SECTION: Classes & Enums
-classDeclaration: annotation? typeModifer* CLASS classname=identifier superclass=typeExtension_Child? classBody=varAndFunctionBlock Semicolon?; //TODO: Generic Types
+classDeclaration: annotation? typeModifer* CLASS classname=identifier superclass=typeExtension_Child? classBody=varAndFunctionBlock Semicolon?; 
 enumDeclaration: annotation? typeModifer* ENUM enumname=identifier superenum=typeExtension_Child? enumBody Semicolon?;
 enumBody: LCurly (enumValue ((Comma|WHITESPACES) enumValue)*)? RCurly;
 enumValue: itemname=identifier (Assign itemValue=primaryExpression)?;
@@ -53,12 +53,12 @@ expression:  primaryExpression                                                  
                  expression                                                               ;
 primaryExpression:  esFunction    = functionCall              |
                     esString      = literalString             |
-                    esInt         = LiteralInteger            |
-                    esFloat       = LiteralFloat              |
-                    esBool        = LiteralBoolean            |
+                    esInt         = literalInteger            |
+                    esFloat       = literalFloat              |
+                    esBool        = literalBoolean            |
                     parExpression = parenthesisedExpression   |
                     esArray       = literalArray              |
-                    esNull        = NULL                      |
+                    esNull        = literalNull               |
                     esVariable    = identifier                |
 //                  esGeneric     = identifier typeList       |
                     esArrayIndex  = identifier arrayIndex     ;
@@ -104,6 +104,10 @@ expressionList: expression (Comma expression)*;
 arrayIndex: LSBracket expression? RSBracket;
 literalArray: LCurly expressionList? RCurly;
 literalString: LiteralString | PREPROC_LINE | PREPROC_FILE;
+literalInteger: LiteralInteger;
+literalNull: NULL;
+literalFloat: LiteralFloat; //TODO: Scientific Notation
+literalBoolean: LiteralBoolean;
 foreachVariable: (identifier | AUTO) iteratedVariableName=identifier;
 switchLabel: CASE (expression) Colon | DEFAULT Colon;
 switchBlockStatementGroup: switchLabel  (statementBlock | statement*);
