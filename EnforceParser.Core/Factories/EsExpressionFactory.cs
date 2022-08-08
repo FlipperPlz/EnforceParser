@@ -95,7 +95,7 @@ public static class EsExpressionFactory {
         if (ctx.esFloat is { } esFloat) return (IEsPrimaryExpression)new EsFloat().FromParseRule(esFloat);
         if (ctx.esBool is { } esBool) return (IEsPrimaryExpression)new EsBoolean().FromParseRule(esBool);
         if (ctx.esArray is { } esArray) return (IEsPrimaryExpression)new EsArray().FromParseRule(esArray);
-        if (ctx.esVariable is { } esVariable) new EsVariable().FromParseRule(esVariable);
+        if (ctx.esVariable is { } esVariable) new EsVariableName().FromParseRule(esVariable);
         if (ctx.esNull is { } esNull) new EsNullType().FromParseRule(esNull);
         if (ctx.esFunction is { } esFunction) new EsFunctionCall().FromParseRule(esFunction);
         if (ctx.esArrayIndex is { } esArrayIndex) new EsArrayIndex().FromParseRule(esArrayIndex);
@@ -106,7 +106,7 @@ public static class EsExpressionFactory {
     private static IEsExpression CreateContextChange(Generated.EnforceParser.ExpressionContext ctx) {
         if (ctx.esFunction is { } functionCall) return new EsFunctionContextExpression(Create(ctx.expression()[0]), (EsFunctionCall)new EsFunctionCall().FromParseRule(functionCall));
         if (ctx.esArrayIndex is { } arrayIndex) return new EsArrayIndexContextExpression(Create(ctx.expression()[0]), (EsArrayIndex)new EsArrayIndex().FromParseRule(arrayIndex));
-        if (ctx.esVariable is { } variable) return new EsVariableContextExpression(Create(ctx.expression()[0]), (EsVariable)new EsVariable().FromParseRule(variable));
+        if (ctx.esVariable is { } variable) return new EsVariableContextExpression(Create(ctx.expression()[0]), (EsVariableName)new EsVariableName().FromParseRule(variable));
         throw new Exception("The rule you have tried to call is not supported by the serialization base.");
     }
 }

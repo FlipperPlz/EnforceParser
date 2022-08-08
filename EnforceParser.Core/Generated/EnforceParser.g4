@@ -8,7 +8,7 @@ typeDeclaration: classDeclaration | enumDeclaration | typedefDeclaration;
 
 //SECTION: Variables & Functions
 varAndFunctionBlock: LCurly (functionDeclaration | variableDeclaration)* RCurly;
-variableDeclaration: annotation? variableModifier* variableType=identifier typeList? variableDeclarators Semicolon;
+variableDeclaration: annotation? variableModifier* variableType=identifier variableDeclarators Semicolon;
 variableDeclarators: variableDeclarator (Comma variableDeclarator)*;
 variableDeclarator: variableName=identifier (LSBracket arrayLength=expression? RSBracket)? (Assign variableValue=expression)?;
 functionDeclaration: annotation? functionModifier* returnType=identifier typeList? deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
@@ -115,7 +115,7 @@ literalInteger: LiteralInteger;
 literalNull: NULL;
 literalFloat: LiteralFloat; //TODO: Scientific Notation
 literalBoolean: LiteralBoolean;
-foreachVariable: (identifier | AUTO) iteratedVariableName=identifier;
+foreachVariable: iteratedVariableType=identifier iteratedVariableName=identifier;
 switchLabel: CASE (expression) Colon | DEFAULT Colon;
 switchBlockStatementGroup: switchLabel  (statementBlock | statement*);
 emptyBlock: LCurly RCurly;

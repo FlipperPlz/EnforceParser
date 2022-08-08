@@ -5,13 +5,13 @@ namespace EnforceParser.Core.Models.Expression.Operations.Contextual;
 
 public class EsVariableContextExpression : IEsExpression {
     public IEsExpression Context { get; set; }
-    public EsVariable Variable { get; set; }
+    public EsVariableName VariableName { get; set; }
 
-    public EsVariableContextExpression(IEsExpression context, EsVariable variable) {
+    public EsVariableContextExpression(IEsExpression context, EsVariableName variableName) {
         Context = context;
-        Variable = variable;
+        VariableName = variableName;
     }
     
     
-    public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(Variable.ToEnforce()).ToString();
+    public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(VariableName.ToEnforce()).ToString();
 }
