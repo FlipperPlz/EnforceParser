@@ -7,13 +7,13 @@ using EnforceParser.Core.Models.Expression.Primary.Primitives;
 namespace EnforceParser.Core.Models.Expression.Primary; 
 
 public class EsFunctionCall : IEsPrimaryExpression, IEsDeserializable<Generated.EnforceParser.FunctionCallContext> {
-    public EsVariableName FunctionName { get; set; }
+    public EsFunctionName FunctionName { get; set; }
     public List<IEsFunctionCallParameter> FunctionParameters { get; set; } = new();
 
 
     public IEsDeserializable<Generated.EnforceParser.FunctionCallContext> FromParseRule(Generated.EnforceParser.FunctionCallContext ctx) {
         if (ctx.identifier() is not { } identifier) throw new Exception();
-        FunctionName = (EsVariableName) new EsVariableName().FromParseRule(identifier);
+        FunctionName = (EsFunctionName) new EsFunctionName().FromParseRule(identifier);
         
         if(ctx.functionCallParameters() is { } parametersCtx) {
             if (parametersCtx.functionCallParameterList() is { } parameterListRule) {

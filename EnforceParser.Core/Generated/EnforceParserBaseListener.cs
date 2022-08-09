@@ -733,6 +733,30 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitGenericType([NotNull] EnforceParser.GenericTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.genericTypeDeclarationList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGenericTypeDeclarationList([NotNull] EnforceParser.GenericTypeDeclarationListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.genericTypeDeclarationList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGenericTypeDeclarationList([NotNull] EnforceParser.GenericTypeDeclarationListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.genericTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGenericTypeDeclaration([NotNull] EnforceParser.GenericTypeDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.genericTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGenericTypeDeclaration([NotNull] EnforceParser.GenericTypeDeclarationContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.annotation"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

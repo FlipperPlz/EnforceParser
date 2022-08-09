@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using EnforceParser.Core.Models.Expression.Primary;
+using EnforceParser.Core.Models.Generics;
 using EnforceParser.Core.Models.Modifiers;
 
 namespace EnforceParser.Core.Models.Expression; 

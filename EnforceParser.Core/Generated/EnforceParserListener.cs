@@ -612,6 +612,26 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitGenericType([NotNull] EnforceParser.GenericTypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.genericTypeDeclarationList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGenericTypeDeclarationList([NotNull] EnforceParser.GenericTypeDeclarationListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.genericTypeDeclarationList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGenericTypeDeclarationList([NotNull] EnforceParser.GenericTypeDeclarationListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.genericTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGenericTypeDeclaration([NotNull] EnforceParser.GenericTypeDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.genericTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGenericTypeDeclaration([NotNull] EnforceParser.GenericTypeDeclarationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.annotation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -381,6 +381,18 @@ public interface IEnforceParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitGenericType([NotNull] EnforceParser.GenericTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.genericTypeDeclarationList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGenericTypeDeclarationList([NotNull] EnforceParser.GenericTypeDeclarationListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EnforceParser.genericTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGenericTypeDeclaration([NotNull] EnforceParser.GenericTypeDeclarationContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EnforceParser.annotation"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

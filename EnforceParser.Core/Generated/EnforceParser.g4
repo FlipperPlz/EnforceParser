@@ -7,16 +7,16 @@ globalDeclaration:  variableDeclaration | functionDeclaration;
 typeDeclaration: classDeclaration | enumDeclaration | typedefDeclaration;
 
 //SECTION: Variables & Functions
-varAndFunctionBlock: LCurly (functionDeclaration | variableDeclaration)* RCurly;
+varAndFunctionBlock: (globalDeclaration) | LCurly (globalDeclaration)* RCurly;
 variableDeclaration: annotation? variableModifier* variableType=identifier variableDeclarators Semicolon;
 variableDeclarators: variableDeclarator (Comma variableDeclarator)*;
 variableDeclarator: variableName=identifier (LSBracket arrayLength=expression? RSBracket)? (Assign variableValue=expression)?;
-functionDeclaration: annotation? functionModifier* returnType=identifier typeList? deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
+functionDeclaration: annotation? functionModifier* returnType=identifier deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
 functionParameters: LParenthesis (functionParameter (Comma functionParameter)*)? RParenthesis;
 functionParameter: variableModifier* parameterType=identifier variableDeclarator;
 
 //SECTION: Classes & Enums
-classDeclaration: annotation? typeModifer* CLASS classname=identifier superclass=typeExtension_Child? classBody=varAndFunctionBlock Semicolon?; 
+classDeclaration: annotation? typeModifer* CLASS classname=identifier genericTypeDeclarationList? superclass=typeExtension_Child? classBody=varAndFunctionBlock? Semicolon?; 
 enumDeclaration: annotation? typeModifer* ENUM enumname=identifier superenum=typeExtension_Child? enumBody Semicolon?;
 enumBody: LCurly (enumValue ((Comma|WHITESPACES) enumValue)*)? RCurly;
 enumValue: itemname=identifier (Assign itemValue=primaryExpression)?;
@@ -105,7 +105,7 @@ continueStatement: CONTINUE Semicolon;
 
 //SECTION: Common Rules
 forControl: forInit=statement forCondition=expression Semicolon forIteration=expression Semicolon*;
-typeExtension_Child: extends=(EXTENDS | Colon) classname=identifier;
+typeExtension_Child: extends=(EXTENDS | Colon) classname=identifier genericTypeDeclarationList?;
 identifier: IDENTIFIER | TYPE_INT | TYPE_BOOL | TYPE_FLOAT | TYPE_STRING | TYPE_VECTOR | VOID | AUTO | TYPENAME | FUNC;
 expressionList: expression (Comma expression)*;
 arrayIndex: LSBracket expression? RSBracket;
@@ -119,11 +119,13 @@ foreachVariable: iteratedVariableType=identifier iteratedVariableName=identifier
 switchLabel: CASE (expression) Colon | DEFAULT Colon;
 switchBlockStatementGroup: switchLabel  (statementBlock | statement*);
 emptyBlock: LCurly RCurly;
-typedefDeclaration: annotation? 'typedef' fromType=typedefType toType=typedefType Semicolon;
+typedefDeclaration: annotation? 'typedef' fromType=typedefType toType=identifier Semicolon;
 typedefType: keyword | identifier typeList?;
 keyword: CLASS | ENUM | SWITCH | EXTENDS | CONST | BREAK | CASE | ELSE | FOR | CONTINUE | FOREACH | IF | NEW | RETURN | THIS | THREAD | VOID | WHILE | AUTOPTR | AUTO | REF | NULL | NOTNULL | FUNC | NATIVE | VOLATILE | PROTO | STATIC | OWNED | REFERENCE | OUT | PROTECTED | EVENT | TYPEDEF | MODDED | OVERRIDE | SEALED | INOUT | SUPER | TYPENAME | POINTER | GOTO | PRIVATE | EXTERNAL | DELETE | LOCAL | TYPE_INT | TYPE_FLOAT | TYPE_BOOL | TYPE_STRING | TYPE_VECTOR | LiteralBoolean | DEFAULT;
 typeList: Less genericType (Comma genericType)* Greater;
 genericType: variableModifier* type=identifier;
+genericTypeDeclarationList:  Less genericTypeDeclaration (Comma genericTypeDeclaration)* Greater;
+genericTypeDeclaration: variableModifier* type=identifier (LSBracket RSBracket)? typeName=identifier; 
 annotation: LSBracket functionCall RSBracket;
 
 //SECTION: Modifiers

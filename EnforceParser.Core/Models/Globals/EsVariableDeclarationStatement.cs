@@ -3,10 +3,11 @@ using EnforceParser.Core.Factories;
 using EnforceParser.Core.Models.Expression;
 using EnforceParser.Core.Models.Expression.Primary.Primitives;
 using EnforceParser.Core.Models.Modifiers;
+using EnforceParser.Core.Models.Statements;
 
-namespace EnforceParser.Core.Models.Statements; 
+namespace EnforceParser.Core.Models.Globals; 
 
-public class EsVariableDeclarationStatement : IEsStatement, IEsDeserializable<Generated.EnforceParser.VariableDeclarationContext> {
+public class EsVariableDeclarationStatement : IEsStatement, IEsGlobalStatement, IEsDeserializable<Generated.EnforceParser.VariableDeclarationContext> {
     public EsAnnotation? VariableAnnotation { get; set; } = null;
     public List<EsVariableModifier> VariableModifiers { get; set; } = new();
     public EsClassname VariableType { get; set; }
@@ -19,7 +20,7 @@ public class EsVariableDeclarationStatement : IEsStatement, IEsDeserializable<Ge
             foreach (var modifierCtx in variableModifiers) {
                 var modifierText = string.Concat(modifierCtx.GetText()[0].ToString().ToUpper(), modifierCtx.GetText().AsSpan(1));
                 if (Enum.TryParse(modifierText, out EsVariableModifier modifier)) VariableModifiers.Add(modifier);
-                else throw new Exception($"Failed to parse variable identifier from \"{modifierText}\".");
+                else throw new Exception($"Failed to parse variable modifier from \"{modifierText}\".");
             }
         }
 

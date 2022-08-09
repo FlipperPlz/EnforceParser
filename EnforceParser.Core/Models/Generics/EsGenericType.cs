@@ -1,8 +1,7 @@
 ﻿using System.Text;
-using EnforceParser.Core.Models.Expression;
 using EnforceParser.Core.Models.Modifiers;
 
-namespace EnforceParser.Core.Models; 
+namespace EnforceParser.Core.Models.Generics; 
 
 public class EsGenericType : IEsSerializable, IEsDeserializable<Generated.EnforceParser.GenericTypeContext> {
     public List<EsVariableModifier> Modifiers;
