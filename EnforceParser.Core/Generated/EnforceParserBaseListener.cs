@@ -649,6 +649,18 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSwitchLabel([NotNull] EnforceParser.SwitchLabelContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.defaultSwitchLabel"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDefaultSwitchLabel([NotNull] EnforceParser.DefaultSwitchLabelContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.defaultSwitchLabel"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDefaultSwitchLabel([NotNull] EnforceParser.DefaultSwitchLabelContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.switchBlockStatementGroup"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

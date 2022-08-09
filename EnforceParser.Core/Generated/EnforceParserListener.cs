@@ -542,6 +542,16 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSwitchLabel([NotNull] EnforceParser.SwitchLabelContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.defaultSwitchLabel"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDefaultSwitchLabel([NotNull] EnforceParser.DefaultSwitchLabelContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.defaultSwitchLabel"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDefaultSwitchLabel([NotNull] EnforceParser.DefaultSwitchLabelContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.switchBlockStatementGroup"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

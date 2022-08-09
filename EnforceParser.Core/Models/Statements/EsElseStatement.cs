@@ -22,7 +22,7 @@ public class EsElseStatement : IEsStatement, IEsDeserializable<Generated.Enforce
     public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("else ");
-        if (Statements.Count <= 1) return builder.Append(Statements[0].ToEnforce()).ToString();
+        if (Statements.Count == 1) return builder.Append(Statements[0].ToEnforce()).ToString();
         builder.Append('{').Append('\n');
         Statements.ForEach(s => builder.Append(s.ToEnforce()).Append('\n'));
         builder.Append('}');

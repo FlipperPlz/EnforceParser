@@ -68,7 +68,7 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
         if (SuperClass is not null) builder.Append(" : ").Append(SuperClass.ToEnforce());
         if (ClassBody is null || ClassBody.Count == 0) return builder.Append(';').ToString();
         
-        if (ClassBody.Count <= 1) {
+        if (ClassBody.Count == 1) {
             builder.Append(ClassBody[0].ToEnforce());
         } else {
             builder.Append('{').Append('\n');

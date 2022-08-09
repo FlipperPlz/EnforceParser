@@ -29,7 +29,7 @@ public class EsIfStatement : IEsStatement, IEsDeserializable<Generated.EnforcePa
     public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("if ").Append(Condition.ToEnforce()).Append(' ');
-        if (Statements.Count <= 0) {
+        if (Statements.Count == 1) {
             builder.Append(Statements[0].ToEnforce());
         } else {
             builder.Append('{').Append('\n');

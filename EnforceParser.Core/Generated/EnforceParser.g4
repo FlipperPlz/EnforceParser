@@ -116,8 +116,9 @@ literalNull: NULL;
 literalFloat: LiteralFloat; //TODO: Scientific Notation
 literalBoolean: LiteralBoolean;
 foreachVariable: iteratedVariableType=identifier iteratedVariableName=identifier;
-switchLabel: CASE (expression) Colon | DEFAULT Colon;
-switchBlockStatementGroup: switchLabel  (statementBlock | statement*);
+switchLabel: CASE (expression) Colon (statement* | statementSingleOrBlock); 
+defaultSwitchLabel: DEFAULT Colon (statement* | statementSingleOrBlock);
+switchBlockStatementGroup: switchLabel | defaultSwitchLabel;
 emptyBlock: LCurly RCurly;
 typedefDeclaration: annotation? 'typedef' fromType=typedefType toType=identifier Semicolon;
 typedefType: keyword | classReference;

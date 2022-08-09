@@ -56,7 +56,7 @@ public class EsEnumDeclaration : IEsDeserializable<Generated.EnforceParser.EnumD
         
         if (EnumBody is null || EnumBody.Count == 0) return builder.Append(';').ToString();
 
-        if (EnumBody.Count <= 1) {
+        if (EnumBody.Count == 1) {
             return builder.Append(EnumBody[0].ToEnforce()).Append(';').ToString();
         } else {
             builder.Append('{').Append('\n');

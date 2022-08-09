@@ -58,7 +58,7 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
         builder.Append(FunctionName).Append('(').Append(string.Join(", ", FunctionParameters.Select(f => f.ToEnforce()))).Append(')');
         if (FunctionBody is null) return builder.Append(';').ToString();
         builder.Append(' ');
-        if (FunctionBody.Count <= 1) {
+        if (FunctionBody.Count == 1) {
             builder.Append(FunctionBody[0].ToEnforce());
         } else {
             builder.Append('{').Append('\n');

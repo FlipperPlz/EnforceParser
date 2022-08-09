@@ -32,7 +32,7 @@ public class EsForEachStatement : IEsStatement , IEsDeserializable<Generated.Enf
     public string ToEnforce() {
         var builder = new StringBuilder("foreach (").Append(IteratingVariable.ToEnforce()).Append(" : ")
             .Append(Enumerable.ToEnforce()).Append(") ");
-        if (Statements.Count <= 1) {
+        if (Statements.Count == 1) {
             builder.Append(Statements[0].ToEnforce());
         } else {
             builder.Append('{').Append('\n');

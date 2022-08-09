@@ -37,7 +37,7 @@ public class EsForStatement : IEsStatement , IEsDeserializable<Generated.Enforce
     public string ToEnforce() {
         var builder = new StringBuilder("for (").Append(ForInit.ToEnforce()).Append(ForCondition.ToEnforce())
             .Append("; ").Append(ForIteration.ToEnforce()).Append(") ");
-        if (Statements.Count <= 1) {
+        if (Statements.Count == 1) {
             builder.Append(Statements[0].ToEnforce());
         } else {
             builder.Append('{').Append('\n');
