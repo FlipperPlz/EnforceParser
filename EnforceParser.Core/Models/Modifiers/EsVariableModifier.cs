@@ -9,5 +9,6 @@ public enum EsVariableModifier {
     Reference,
     Const,
     Out,
+    Notnull,
     Inout
 }

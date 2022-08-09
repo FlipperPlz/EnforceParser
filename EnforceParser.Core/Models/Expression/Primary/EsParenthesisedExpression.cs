@@ -3,7 +3,7 @@ using EnforceParser.Core.Factories;
 
 namespace EnforceParser.Core.Models.Expression.Primary; 
 
-public class EsParenthesisedExpression : IEsDeserializable<Generated.EnforceParser.ParenthesisedExpressionContext> {
+public class EsParenthesisedExpression : IEsDeserializable<Generated.EnforceParser.ParenthesisedExpressionContext>, IEsPrimaryExpression {
     public IEsExpression Expression { get; set; }
 
     public IEsDeserializable<Generated.EnforceParser.ParenthesisedExpressionContext> FromParseRule(

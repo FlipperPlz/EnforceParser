@@ -43,6 +43,8 @@ public static class EsExpressionFactory {
                         "++" => new EsIncrementExpression(Create(expressions[0]), true),
                         "--" => new EsDecrementExpression(Create(expressions[0]), true),
                         "~" => throw new Exception("probably not working/used in enforce."),
+                        "+" => new EsPositiveExpression(Create(expressions[0])),
+                        "-" => new EsNegativeExpression(Create(expressions[0])),
                         "!" => new EsNegationalExpression(Create(expressions[0])),
                         _ => throw new Exception($"Unknown prefix '{prefix.Text}' in expression context.")
                     };

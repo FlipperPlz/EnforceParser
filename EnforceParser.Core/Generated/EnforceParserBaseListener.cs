@@ -769,6 +769,18 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAnnotation([NotNull] EnforceParser.AnnotationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.classReference"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterClassReference([NotNull] EnforceParser.ClassReferenceContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.classReference"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitClassReference([NotNull] EnforceParser.ClassReferenceContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.typeModifer"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

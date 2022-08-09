@@ -642,6 +642,16 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotation([NotNull] EnforceParser.AnnotationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.classReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterClassReference([NotNull] EnforceParser.ClassReferenceContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.classReference"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitClassReference([NotNull] EnforceParser.ClassReferenceContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.typeModifer"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -8,12 +8,12 @@ typeDeclaration: classDeclaration | enumDeclaration | typedefDeclaration;
 
 //SECTION: Variables & Functions
 varAndFunctionBlock: (globalDeclaration) | LCurly (globalDeclaration)* RCurly;
-variableDeclaration: annotation? variableModifier* variableType=identifier variableDeclarators Semicolon;
+variableDeclaration: annotation? variableModifier* variableType=classReference variableDeclarators Semicolon;
 variableDeclarators: variableDeclarator (Comma variableDeclarator)*;
 variableDeclarator: variableName=identifier (LSBracket arrayLength=expression? RSBracket)? (Assign variableValue=expression)?;
-functionDeclaration: annotation? functionModifier* returnType=identifier deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
+functionDeclaration: annotation? functionModifier* returnType=classReference deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
 functionParameters: LParenthesis (functionParameter (Comma functionParameter)*)? RParenthesis;
-functionParameter: variableModifier* parameterType=identifier typeList? variableDeclarator;
+functionParameter: variableModifier* parameterType=classReference variableDeclarator;
 
 //SECTION: Classes & Enums
 classDeclaration: annotation? typeModifer* CLASS classname=identifier genericTypeDeclarationList? superclass=typeExtension_Child? classBody=varAndFunctionBlock? Semicolon?; 
@@ -33,7 +33,7 @@ expression:  primaryExpression                                                  
                 )                                                                         |
              objectCreation                                                               |
              expression suffix=(Increment | Decrement)                                    |
-             prefix=(Increment | Decrement | Bang /*| Add | Subtract*/) expression        |
+             prefix=(Increment | Decrement | Bang | Add | Subtract) expression        |
              expression (parenthesisedExpression) expression                              |
              expression op=(Multiply | Divide | Modulo) expression                        |
              expression op=(/*Increment | Decrement |*/ Add | Subtract) expression        |
@@ -120,14 +120,16 @@ switchLabel: CASE (expression) Colon | DEFAULT Colon;
 switchBlockStatementGroup: switchLabel  (statementBlock | statement*);
 emptyBlock: LCurly RCurly;
 typedefDeclaration: annotation? 'typedef' fromType=typedefType toType=identifier Semicolon;
-typedefType: keyword | identifier typeList?;
+typedefType: keyword | classReference;
 keyword: CLASS | ENUM | SWITCH | EXTENDS | CONST | BREAK | CASE | ELSE | FOR | CONTINUE | FOREACH | IF | NEW | RETURN | THIS | THREAD | VOID | WHILE | AUTOPTR | AUTO | REF | NULL | NOTNULL | FUNC | NATIVE | VOLATILE | PROTO | STATIC | OWNED | REFERENCE | OUT | PROTECTED | EVENT | TYPEDEF | MODDED | OVERRIDE | SEALED | INOUT | SUPER | TYPENAME | POINTER | GOTO | PRIVATE | EXTERNAL | DELETE | LOCAL | TYPE_INT | TYPE_FLOAT | TYPE_BOOL | TYPE_STRING | TYPE_VECTOR | LiteralBoolean | DEFAULT;
+
 typeList: Less genericType (Comma genericType)* Greater;
 genericType: variableModifier* type=identifier;
-genericTypeDeclarationList:  Less genericTypeDeclaration (Comma genericTypeDeclaration)* Greater;
-genericTypeDeclaration: variableModifier* type=identifier (LSBracket RSBracket)? typeName=identifier; 
-annotation: LSBracket functionCall RSBracket;
 
+genericTypeDeclarationList:  Less genericTypeDeclaration (Comma genericTypeDeclaration)* Greater;
+genericTypeDeclaration: variableModifier* type=classReference typeName=identifier (LSBracket RSBracket)?; 
+annotation: LSBracket functionCall RSBracket;
+classReference: classname=identifier typeList?;
 //SECTION: Modifiers
 typeModifer: MODDED | SEALED;
 variableModifier: PRIVATE |
@@ -138,6 +140,7 @@ variableModifier: PRIVATE |
                REF | REFERENCE |
                CONST |
                OUT |
+               NOTNULL |
                INOUT;
 functionModifier: PRIVATE |
                PROTECTED |

@@ -11,7 +11,7 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
     public List<EsTypeModifier> ClassModifiers { get; set; } = new();
     public EsClassname Classname { get; set; }
     public List<EsGenericTypeDeclaration>? ClassGenericVariables { get; set; } = null;
-    public EsClassReference? SuperClass { get; set; } = null;
+    public EsSuperClass? SuperClass { get; set; } = null;
     public List<IEsGlobalStatement>? ClassBody { get; set; }
     
     public IEsDeserializable<Generated.EnforceParser.ClassDeclarationContext> FromParseRule(Generated.EnforceParser.ClassDeclarationContext ctx) {
@@ -40,7 +40,7 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
                 superGenerics = genericList.genericTypeDeclaration().Select(generic => (EsGenericTypeDeclaration)new EsGenericTypeDeclaration().FromParseRule(generic)).ToList();
             }
 
-            SuperClass = new EsClassReference(superClassName, superGenerics);
+            SuperClass = new EsSuperClass(superClassName, superGenerics);
         }
 
         if (ctx.classBody is { } body) {

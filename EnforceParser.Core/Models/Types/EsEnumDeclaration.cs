@@ -9,7 +9,7 @@ public class EsEnumDeclaration : IEsDeserializable<Generated.EnforceParser.EnumD
     public EsAnnotation? EnumAnnotation { get; set; } = null;
     public List<EsTypeModifier> EnumModifiers { get; set; } = new();
     public EsClassname EnumName { get; set; }
-    public EsClassReference? SuperEnum { get; set; } = null;
+    public EsSuperClass? SuperEnum { get; set; } = null;
     public List<EsEnumItem>? EnumBody { get; set; }
     
     public IEsDeserializable<Generated.EnforceParser.EnumDeclarationContext> FromParseRule(Generated.EnforceParser.EnumDeclarationContext ctx) {
@@ -31,7 +31,7 @@ public class EsEnumDeclaration : IEsDeserializable<Generated.EnforceParser.EnumD
             if (superenum.genericTypeDeclarationList() is { } genericList) superGenerics = genericList.genericTypeDeclaration().Select(generic => (EsGenericTypeDeclaration) new EsGenericTypeDeclaration().FromParseRule(generic)).ToList();
             
 
-            SuperEnum = new EsClassReference(superEnumName, superGenerics);
+            SuperEnum = new EsSuperClass(superEnumName, superGenerics);
         }
 
         if (ctx.enumBody() is { } enumBody) {

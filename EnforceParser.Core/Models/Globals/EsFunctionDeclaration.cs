@@ -9,7 +9,7 @@ namespace EnforceParser.Core.Models;
 public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Generated.EnforceParser.FunctionDeclarationContext> {
     public EsAnnotation? FunctionAnnotation { get; set; } = null;
     public List<EsFunctionModifier> FunctionModifiers { get; set; } = new();
-    public EsClassname? ReturnType { get; set; } = null;//Null for void
+    public EsClassReference? ReturnType { get; set; } = null;//Null for void
     public bool Deconstructor { get; set; } = false;
     public EsFunctionName FunctionName { get; set; }
     public List<EsFunctionDeclarationParameter> FunctionParameters { get; set; } = new();
@@ -25,7 +25,7 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
         }
 
         if (ctx.returnType is null) throw new Exception();
-        if (ctx.returnType.GetText() != "void") ReturnType = (EsClassname) new EsClassname().FromParseRule(ctx.returnType);
+        if (ctx.returnType.GetText() != "void") ReturnType = (EsClassReference?)new EsClassReference().FromParseRule(ctx.returnType);
         if (ctx.deconstructor is not null) Deconstructor = true;
         if (ctx.functionName is null) throw new Exception();
         if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) throw new Exception();
