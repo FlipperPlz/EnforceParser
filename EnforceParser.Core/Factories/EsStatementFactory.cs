@@ -1,4 +1,4 @@
-﻿using EnforceParser.Core.Models.Expression;
+﻿using EnforceParser.Core.Models.Globals;
 using EnforceParser.Core.Models.Statements;
 
 namespace EnforceParser.Core.Factories; 

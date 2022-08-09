@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using EnforceParser.Core.Models.Generics;
 
-namespace EnforceParser.Core.Models; 
+namespace EnforceParser.Core.Models.Scope; 
 
 public class EsClassReference : IEsSerializable {
     public EsClassname Classname { get; set; }

@@ -2,13 +2,16 @@
 using EnforceParser.Core.Factories;
 using EnforceParser.Core.Models.Expression;
 using EnforceParser.Core.Models.Expression.Primary.Primitives;
+using EnforceParser.Core.Models.Generics;
 using EnforceParser.Core.Models.Modifiers;
+using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Models; 
 
 public class EsFunctionDeclarationParameter : IEsDeserializable<Generated.EnforceParser.FunctionParameterContext> {
     public List<EsVariableModifier> ParameterModifiers { get; set; } = new();
     public EsClassname ParameterType { get; set; } 
+    public List<EsGenericType>? ParameterTypeGenerics = null;
     public EsVariableName ParameterName { get; set; }
     public IEsExpression? ParameterValue { get; set; }
     
@@ -24,6 +27,14 @@ public class EsFunctionDeclarationParameter : IEsDeserializable<Generated.Enforc
         if (ctx.variableDeclarator() is not { } declarator) throw new Exception();
 
         ParameterType = (EsClassname) new EsClassname().FromParseRule(parameterType);
+        if (ctx.typeList() is not null) {
+            ParameterTypeGenerics = new List<EsGenericType>();
+            if (ctx.typeList().genericType() is { } genericTypes) {
+                foreach (var generic in genericTypes) {
+                    ParameterTypeGenerics.Add((EsGenericType) new EsGenericType().FromParseRule(generic));
+                }
+            }
+        }
 
         if (declarator.variableName is not { } variableName) throw new Exception();
         if (declarator.variableValue is { } variableValue) ParameterValue = EsExpressionFactory.Create(variableValue);
@@ -35,7 +46,9 @@ public class EsFunctionDeclarationParameter : IEsDeserializable<Generated.Enforc
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (ParameterModifiers.Count > 0) builder.Append(string.Join(' ', ParameterModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
-        builder.Append(ParameterType).Append(' ').Append(ParameterName);
+        builder.Append(ParameterType);
+        if (ParameterTypeGenerics is not null) builder.Append('<').Append(string.Join(", ", ParameterTypeGenerics.Select(g => g.ToEnforce()))).Append('>');
+        builder.Append(' ').Append(ParameterName);
         if (ParameterValue is not null) builder.Append(" = ").Append(ParameterValue.ToEnforce());
         return builder.ToString();
     }

@@ -2,7 +2,7 @@ parser grammar EnforceParser;
 @header {namespace EnforceParser.Core.Generated;}
 options { tokenVocab=EnforceLexer; }
 
-computationalStart: (globalDeclaration | typeDeclaration | typedefDeclaration)* EOF;
+computationalStart: (globalDeclaration | typeDeclaration)* EOF;
 globalDeclaration:  variableDeclaration | functionDeclaration;
 typeDeclaration: classDeclaration | enumDeclaration | typedefDeclaration;
 
@@ -13,7 +13,7 @@ variableDeclarators: variableDeclarator (Comma variableDeclarator)*;
 variableDeclarator: variableName=identifier (LSBracket arrayLength=expression? RSBracket)? (Assign variableValue=expression)?;
 functionDeclaration: annotation? functionModifier* returnType=identifier deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
 functionParameters: LParenthesis (functionParameter (Comma functionParameter)*)? RParenthesis;
-functionParameter: variableModifier* parameterType=identifier variableDeclarator;
+functionParameter: variableModifier* parameterType=identifier typeList? variableDeclarator;
 
 //SECTION: Classes & Enums
 classDeclaration: annotation? typeModifer* CLASS classname=identifier genericTypeDeclarationList? superclass=typeExtension_Child? classBody=varAndFunctionBlock? Semicolon?; 

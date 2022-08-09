@@ -89,7 +89,7 @@ public static class EsExpressionFactory {
         throw new Exception();
     }
 
-    private static IEsPrimaryExpression Create(Generated.EnforceParser.PrimaryExpressionContext ctx) {
+    public static IEsPrimaryExpression Create(Generated.EnforceParser.PrimaryExpressionContext ctx) {
         if (ctx.esString is { } esString) return (IEsPrimaryExpression)new EsString().FromParseRule(esString);
         if (ctx.esInt is { } esInt) return (IEsPrimaryExpression)new EsInteger().FromParseRule(esInt);
         if (ctx.esFloat is { } esFloat) return (IEsPrimaryExpression)new EsFloat().FromParseRule(esFloat);

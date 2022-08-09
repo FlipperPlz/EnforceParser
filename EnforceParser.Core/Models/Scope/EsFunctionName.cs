@@ -1,4 +1,4 @@
-﻿namespace EnforceParser.Core.Models; 
+﻿namespace EnforceParser.Core.Models.Scope; 
 
 public class EsFunctionName : IEsDeserializable<Generated.EnforceParser.IdentifierContext> {
     public string FunctionName { get; set; }

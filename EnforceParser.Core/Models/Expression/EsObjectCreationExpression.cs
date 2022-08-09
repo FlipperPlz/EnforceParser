@@ -2,6 +2,7 @@
 using EnforceParser.Core.Models.Expression.Primary;
 using EnforceParser.Core.Models.Generics;
 using EnforceParser.Core.Models.Modifiers;
+using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Models.Expression; 
 

@@ -2,7 +2,7 @@
 using EnforceParser.Core.Models.Expression;
 using EnforceParser.Core.Models.Expression.Primary.Primitives;
 
-namespace EnforceParser.Core.Models; 
+namespace EnforceParser.Core.Models.Scope; 
 
 public class EsVariableDeclaratorName : IEsSerializable {
     public EsVariableName VariableName { get; set; }

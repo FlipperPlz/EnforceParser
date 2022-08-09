@@ -2,6 +2,7 @@
 using EnforceParser.Core.Models.Generics;
 using EnforceParser.Core.Models.Globals;
 using EnforceParser.Core.Models.Modifiers;
+using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Models.Types; 
 
@@ -11,7 +12,7 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
     public EsClassname Classname { get; set; }
     public List<EsGenericTypeDeclaration>? ClassGenericVariables { get; set; } = null;
     public EsClassReference? SuperClass { get; set; } = null;
-    public List<IEsGlobalStatement> ClassBody { get; set; } = new List<IEsGlobalStatement>();
+    public List<IEsGlobalStatement>? ClassBody { get; set; }
     
     public IEsDeserializable<Generated.EnforceParser.ClassDeclarationContext> FromParseRule(Generated.EnforceParser.ClassDeclarationContext ctx) {
         if (ctx.annotation() is { } annotation) ClassAnnotation = (EsAnnotation) new EsAnnotation().FromParseRule(annotation);
@@ -43,6 +44,7 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
         }
 
         if (ctx.classBody is { } body) {
+            ClassBody = new List<IEsGlobalStatement>();
             foreach (var global in body.globalDeclaration()) {
                 if (global.functionDeclaration() is { } functionDeclaration) ClassBody.Add((IEsGlobalStatement) new EsFunctionDeclaration().FromParseRule(functionDeclaration));
                 else if (global.variableDeclaration() is { } variableDeclaration) ClassBody.Add((IEsGlobalStatement) new EsVariableDeclarationStatement().FromParseRule(variableDeclaration));

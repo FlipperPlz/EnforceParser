@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using EnforceParser.Core.Models.Generics;
+using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Models.Types; 
 

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using EnforceParser.Core.Factories;
 using EnforceParser.Core.Models.Modifiers;
+using EnforceParser.Core.Models.Scope;
 using EnforceParser.Core.Models.Statements;
 
 namespace EnforceParser.Core.Models; 

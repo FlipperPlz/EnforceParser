@@ -7,4 +7,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EnforceParser.Core\EnforceParser.Core.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using EnforceParser.Core.Factories;
 using EnforceParser.Core.Models.Expression.Primary.Primitives;
+using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Models.Expression.Primary; 
 
