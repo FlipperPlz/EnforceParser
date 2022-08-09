@@ -30,7 +30,7 @@ public class EsTypeDefDeclaration : IEsDeserializable<Generated.EnforceParser.Ty
         
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("typedef ").Append(BaseType.ToEnforce());
         if (BaseTypeGenerics is not null) builder.Append('<').Append(string.Join(", ", BaseTypeGenerics)).Append('>');

@@ -43,7 +43,7 @@ public class EsObjectCreationExpression : IEsExpression, IEsDeserializable<Gener
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("new ").Append(string.Join(" ", Modifiers.Select(m => Enum.GetName(m)!.ToLower())));
         if (Modifiers.Count != 0) builder.Append(' ');

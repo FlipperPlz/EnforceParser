@@ -33,7 +33,7 @@ public class EsForStatement : IEsStatement , IEsDeserializable<Generated.Enforce
 
         throw new Exception();
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("for (").Append(ForInit.ToEnforce()).Append(ForCondition.ToEnforce())
             .Append("; ").Append(ForIteration.ToEnforce()).Append(") ");

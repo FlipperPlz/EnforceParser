@@ -14,7 +14,7 @@ public class EsVariableDeclaratorName : IEsSerializable {
         IsArray = array;
         ArrayBoundaries = arrBounds;
     }
-    
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder(VariableName.ToEnforce());
         if (IsArray) {

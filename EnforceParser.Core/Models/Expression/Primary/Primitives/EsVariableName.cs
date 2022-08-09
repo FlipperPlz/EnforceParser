@@ -10,6 +10,6 @@ public class EsVariableName : IEsPrimaryExpression, IEsDeserializable<Generated.
         VariableName = ctx.GetText();
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => VariableName;
 }

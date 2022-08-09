@@ -11,6 +11,6 @@ public class EsAnnotation : IEsDeserializable<Generated.EnforceParser.Annotation
         FunctionCall = (EsFunctionCall) new EsFunctionCall().FromParseRule(ctx.functionCall());
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder("[").Append(FunctionCall.ToEnforce()).Append(']').ToString();
 }

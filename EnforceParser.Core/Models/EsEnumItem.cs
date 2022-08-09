@@ -15,7 +15,7 @@ public class EsEnumItem : IEsDeserializable<Generated.EnforceParser.EnumValueCon
         if (ctx.itemValue is { } value) ItemValue = EsExpressionFactory.Create(value);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder(ItemName.ToEnforce());
         if (ItemValue is not null) builder.Append(" = ").Append(ItemValue);

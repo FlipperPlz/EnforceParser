@@ -27,7 +27,7 @@ public class EsGenericTypeDeclaration : IEsDeserializable<Generated.EnforceParse
         TypeVariableName = (EsVariableName) new EsVariableName().FromParseRule(varName);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (TypeModifiers.Count > 0) builder.Append(string.Join(' ', TypeModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');

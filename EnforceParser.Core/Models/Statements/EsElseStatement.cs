@@ -19,7 +19,7 @@ public class EsElseStatement : IEsStatement, IEsDeserializable<Generated.Enforce
 
         throw new Exception();
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("else ");
         if (Statements.Count <= 1) return builder.Append(Statements[0].ToEnforce()).ToString();

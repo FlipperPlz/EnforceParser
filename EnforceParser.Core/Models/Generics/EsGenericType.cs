@@ -5,7 +5,7 @@ using EnforceParser.Core.Models.Scope;
 namespace EnforceParser.Core.Models.Generics; 
 
 public class EsGenericType : IEsSerializable, IEsDeserializable<Generated.EnforceParser.GenericTypeContext> {
-    public List<EsVariableModifier> Modifiers;
+    public List<EsVariableModifier> Modifiers = new();
     public EsClassname Type;
     
     public IEsDeserializable<Generated.EnforceParser.GenericTypeContext> FromParseRule(Generated.EnforceParser.GenericTypeContext ctx) {
@@ -21,6 +21,10 @@ public class EsGenericType : IEsSerializable, IEsDeserializable<Generated.Enforc
         Type = (EsClassname) new EsClassname().FromParseRule(ctx.identifier());
         return this;
     }
-
-    public string ToEnforce() => new StringBuilder(string.Join(' ', Modifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(Modifiers.Count == 0 ? Type.ToEnforce() : $" {Type.ToEnforce()}").ToString();
+    public override string ToString() => ToEnforce();
+    public string ToEnforce() {
+        var builder = new StringBuilder();
+        if (Modifiers.Count > 0) builder.Append(string.Join(' ', Modifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
+        return builder.Append(Type.ToEnforce()).ToString();
+    }
 }

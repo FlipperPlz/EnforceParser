@@ -29,16 +29,17 @@ public static class EsExpressionFactory {
 
                 //Single expression with suffix
                 if (ctx.suffix is { } suffix) {
-                    return suffix.Text switch {
+                    if (expressions[0] is not null) return suffix.Text switch {
                         "++" => new EsIncrementExpression(Create(expressions[0]), false),
                         "--" => new EsDecrementExpression(Create(expressions[0]), false),
                         _ => throw new Exception($"Unknown suffix '{suffix.Text}' in expression context.")
                     };
+                    
                 }
 
                 //Single expression with prefix
                 if (ctx.prefix is { } prefix) {
-                    return prefix.Text switch {
+                    if (expressions[0] is not null) return prefix.Text switch {
                         "++" => new EsIncrementExpression(Create(expressions[0]), true),
                         "--" => new EsDecrementExpression(Create(expressions[0]), true),
                         "~" => throw new Exception("probably not working/used in enforce."),
@@ -46,10 +47,10 @@ public static class EsExpressionFactory {
                         _ => throw new Exception($"Unknown prefix '{prefix.Text}' in expression context.")
                     };
                 }
-                throw new Exception();
+                break;
             case 2:
                 if (ctx.op is { } @operator) {
-                    return @operator.Text switch {
+                    if (expressions[0] is not null && expressions[1] is not null) return @operator.Text switch {
                         "*" => new EsMultiplicationExpression(Create(expressions[0]), Create(expressions[1])),
                         "/" => new EsDivisionExpression(Create(expressions[0]), Create(expressions[1])),
                         "%" => new EsDivisionExpression(Create(expressions[0]), Create(expressions[1])),
@@ -81,26 +82,35 @@ public static class EsExpressionFactory {
                         "<<=" => new EsLeftShiftAssignExpression(Create(expressions[0]), Create(expressions[1])),
                         ">>=" => new EsRightShiftAssignExpression(Create(expressions[0]), Create(expressions[1])),
                         _ => throw new Exception($"Unknown operator '{@operator.Text}' in expression context.")
-
                     };
                 }
-                throw new Exception();
+                break;
         }
         throw new Exception();
     }
 
     public static IEsPrimaryExpression Create(Generated.EnforceParser.PrimaryExpressionContext ctx) {
-        if (ctx.esString is { } esString) return (IEsPrimaryExpression)new EsString().FromParseRule(esString);
-        if (ctx.esInt is { } esInt) return (IEsPrimaryExpression)new EsInteger().FromParseRule(esInt);
-        if (ctx.esFloat is { } esFloat) return (IEsPrimaryExpression)new EsFloat().FromParseRule(esFloat);
-        if (ctx.esBool is { } esBool) return (IEsPrimaryExpression)new EsBoolean().FromParseRule(esBool);
-        if (ctx.esArray is { } esArray) return (IEsPrimaryExpression)new EsArray().FromParseRule(esArray);
-        if (ctx.esVariable is { } esVariable) new EsVariableName().FromParseRule(esVariable);
-        if (ctx.esNull is { } esNull) new EsNullType().FromParseRule(esNull);
-        if (ctx.esFunction is { } esFunction) new EsFunctionCall().FromParseRule(esFunction);
-        if (ctx.esArrayIndex is { } esArrayIndex) new EsArrayIndex().FromParseRule(esArrayIndex);
-        if (ctx.parExpression is { } esParExpression) new EsParenthesisedExpression().FromParseRule(esParExpression);
-        throw new Exception("The rule you have tried to call is not supported by the serialization base.");
+        if (ctx.esFunction is { }) 
+            return (IEsPrimaryExpression) new EsFunctionCall().FromParseRule(ctx.esFunction);
+        else if (ctx.esString is { }) 
+            return (IEsPrimaryExpression) new EsString().FromParseRule(ctx.esString);
+        else if (ctx.esInt is { }) 
+            return (IEsPrimaryExpression) new EsInteger().FromParseRule(ctx.esInt);
+        else if (ctx.esFloat is { }) 
+            return (IEsPrimaryExpression) new EsFloat().FromParseRule(ctx.esFloat);
+        else if (ctx.esBool is { })
+            return (IEsPrimaryExpression) new EsBoolean().FromParseRule(ctx.esBool);
+        else if (ctx.parExpression is { }) 
+            return (IEsPrimaryExpression) new EsParenthesisedExpression().FromParseRule(ctx.parExpression);
+        else if (ctx.esArray is { }) 
+            return (IEsPrimaryExpression) new EsArray().FromParseRule(ctx.esArray);
+        else if (ctx.esNull is { }) 
+            return (IEsPrimaryExpression) new EsNullType().FromParseRule(ctx.esNull);
+        else if (ctx.esVariable is { })
+            return (IEsPrimaryExpression) new EsVariableName().FromParseRule(ctx.esVariable);
+        else if (ctx.esArrayIndex is { }) 
+            return (IEsPrimaryExpression) new EsArrayIndex().FromParseRule(ctx.esArrayIndex);
+        else throw new Exception("The rule you have tried to call is not supported by the serialization base.");
     }
 
     private static IEsExpression CreateContextChange(Generated.EnforceParser.ExpressionContext ctx) {

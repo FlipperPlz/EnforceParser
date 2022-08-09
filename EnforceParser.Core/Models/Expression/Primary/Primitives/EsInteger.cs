@@ -11,7 +11,7 @@ public class EsInteger : IEsPrimitiveValue<int, Generated.EnforceParser.LiteralI
     
     public static implicit operator EsInteger (int i) => new(i);
     public static implicit operator int (EsInteger i) => i.Value;
-
+    public override string ToString() => ToEnforce();
     public IEsDeserializable<Generated.EnforceParser.LiteralIntegerContext> FromParseRule(Generated.EnforceParser.LiteralIntegerContext ctx) {
         var found = ctx.Start.InputStream.GetText(new Interval(ctx.Start.StartIndex, ctx.Stop.StopIndex));
 

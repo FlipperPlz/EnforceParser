@@ -14,6 +14,7 @@ public class EsArrayIndex : IEsPrimaryExpression, IEsDeserializable<Generated.En
         Index = EsExpressionFactory.Create(expressionContext);
         return this;
     }
+    public override string ToString() => ToEnforce();
 
     public string ToEnforce() => new StringBuilder(Array.ToEnforce()).Append('[').Append(Index.ToEnforce()).Append(']')
         .ToString();

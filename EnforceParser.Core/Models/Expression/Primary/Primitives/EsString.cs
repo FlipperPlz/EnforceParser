@@ -13,7 +13,7 @@ public class EsString : IEsPrimitiveValue<string, Generated.EnforceParser.Litera
         Value = ctx.Start.InputStream.GetText(new Interval(ctx.Start.StartIndex, ctx.Stop.StopIndex)).TrimStart('"').TrimEnd('"');
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder("\"").Append(Value).Append('"').ToString();
 
     public static implicit operator EsString(string s) => new(s);

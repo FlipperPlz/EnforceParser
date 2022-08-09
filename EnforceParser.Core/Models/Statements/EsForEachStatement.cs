@@ -28,7 +28,7 @@ public class EsForEachStatement : IEsStatement , IEsDeserializable<Generated.Enf
 
         throw new Exception();
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("foreach (").Append(IteratingVariable.ToEnforce()).Append(" : ")
             .Append(Enumerable.ToEnforce()).Append(") ");

@@ -11,6 +11,6 @@ public class EsExpressionStatement : IEsStatement, IEsDeserializable<Generated.E
         Expression = EsExpressionFactory.Create(ctx);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder(Expression.ToString()).Append(';').ToString();
 }

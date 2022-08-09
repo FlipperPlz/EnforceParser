@@ -7,6 +7,6 @@ public class EsEnumName : IEsDeserializable<Generated.EnforceParser.IdentifierCo
         EnumName = ctx.GetText();
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => EnumName;
 }

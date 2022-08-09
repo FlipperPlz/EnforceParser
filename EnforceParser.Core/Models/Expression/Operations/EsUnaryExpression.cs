@@ -8,6 +8,6 @@ public abstract class EsUnaryExpression : IEsExpression {
         Base = @base;
         Expression = expression;
     }
-
+    public override string ToString() => ToEnforce();
     public abstract string ToEnforce();
 }

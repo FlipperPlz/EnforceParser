@@ -45,7 +45,7 @@ public class EsEnumDeclaration : IEsDeserializable<Generated.EnforceParser.EnumD
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (EnumAnnotation is not null) builder.Append(EnumAnnotation.ToEnforce()).Append(' ');

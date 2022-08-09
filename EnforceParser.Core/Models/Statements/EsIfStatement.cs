@@ -26,7 +26,7 @@ public class EsIfStatement : IEsStatement, IEsDeserializable<Generated.EnforcePa
 
         throw new Exception();
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("if ").Append(Condition.ToEnforce()).Append(' ');
         if (Statements.Count <= 0) {

@@ -12,6 +12,6 @@ public class EsParenthesisedExpression : IEsDeserializable<Generated.EnforcePars
         Expression = EsExpressionFactory.Create(expression);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder("(").Append(Expression.ToEnforce()).Append(')').ToString();
 }

@@ -11,5 +11,6 @@ public static class EnforceTesting {
         var listener = new EnforcePreParser();
         new ParseTreeWalker().Walk(listener, parser.computationalStart());
         var script = listener.Script;
+        Console.WriteLine(script.ToEnforce());
     }
 }

@@ -11,7 +11,7 @@ public class EsReturnStatement : IEsStatement, IEsDeserializable<Generated.Enfor
         if (ctx.expression() is { } expression) Expression = EsExpressionFactory.Create(expression);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder("return")
         .Append(Expression is null ? ";" : new StringBuilder(" ").Append(Expression.ToEnforce()).Append(';').ToString())
         .ToString();

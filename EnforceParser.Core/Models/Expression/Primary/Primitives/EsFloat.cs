@@ -11,7 +11,7 @@ public class EsFloat : IEsPrimitiveValue<float, Generated.EnforceParser.LiteralF
     
     public static implicit operator EsFloat (float i) => new(i);
     public static implicit operator float (EsFloat i) => i.Value;
-    
+    public override string ToString() => ToEnforce();
     public IEsDeserializable<Generated.EnforceParser.LiteralFloatContext> FromParseRule(Generated.EnforceParser.LiteralFloatContext ctx) {
         var found = ctx.Start.InputStream.GetText(new Interval(ctx.Start.StartIndex, ctx.Stop.StopIndex));
         try {

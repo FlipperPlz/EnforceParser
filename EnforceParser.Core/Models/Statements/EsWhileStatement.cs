@@ -24,7 +24,7 @@ public class EsWhileStatement : IEsStatement, IEsDeserializable<Generated.Enforc
 
         throw new Exception();
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder("while ").Append(Condition.ToEnforce()).Append(' ');
         if (Statements.Count <= 1) {

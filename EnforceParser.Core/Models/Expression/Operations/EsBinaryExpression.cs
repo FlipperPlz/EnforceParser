@@ -8,6 +8,6 @@ public abstract class EsBinaryExpression : IEsExpression {
         Left = left;
         Right = right;
     }
-
+    public override string ToString() => ToEnforce();
     public abstract string ToEnforce();
 }

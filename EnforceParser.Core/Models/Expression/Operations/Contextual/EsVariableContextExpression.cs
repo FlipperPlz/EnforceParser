@@ -12,6 +12,6 @@ public class EsVariableContextExpression : IEsExpression {
         VariableName = variableName;
     }
     
-    
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(VariableName.ToEnforce()).ToString();
 }

@@ -11,6 +11,6 @@ public class EsDeleteStatement : IEsStatement, IEsDeserializable<Generated.Enfor
         Expression = EsExpressionFactory.Create(expression);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder("delete ").Append(Expression.ToEnforce()).Append(';').ToString();
 }

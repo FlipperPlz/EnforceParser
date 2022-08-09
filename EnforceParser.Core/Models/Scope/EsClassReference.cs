@@ -11,7 +11,7 @@ public class EsClassReference : IEsSerializable {
         Classname = classname;
         Generics = generics;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder(Classname.ToEnforce());
         if (Generics is not null) {

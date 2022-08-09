@@ -12,6 +12,6 @@ public class EsGotoStatement : IEsStatement, IEsDeserializable<Generated.Enforce
         Expression = EsExpressionFactory.Create(expression);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder("goto ").Append(Expression.ToEnforce()).Append(';').ToString();
 }

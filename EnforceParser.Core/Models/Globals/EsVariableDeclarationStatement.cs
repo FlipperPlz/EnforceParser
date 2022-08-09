@@ -12,7 +12,7 @@ public class EsVariableDeclarationStatement : IEsStatement, IEsGlobalStatement, 
     public EsAnnotation? VariableAnnotation { get; set; } = null;
     public List<EsVariableModifier> VariableModifiers { get; set; } = new();
     public EsClassname VariableType { get; set; }
-    public Dictionary<EsVariableDeclaratorName, IEsExpression?> Variables;
+    public List<EsVariableDeclarator> Variables { get; set; } = new();
 
 
     public IEsDeserializable<Generated.EnforceParser.VariableDeclarationContext> FromParseRule(Generated.EnforceParser.VariableDeclarationContext ctx) {
@@ -27,31 +27,17 @@ public class EsVariableDeclarationStatement : IEsStatement, IEsGlobalStatement, 
 
         if (ctx.variableDeclarators() is null) throw new Exception();
 
-        foreach (var declarator in ctx.variableDeclarators().variableDeclarator()) {
-            if (declarator.variableName is not { }) throw new Exception();
-            var varName = (EsVariableName) new EsVariableName().FromParseRule(declarator.variableName);
-            var isArr = declarator.LSBracket() is not null;
-            IEsExpression arrBounds = null;
-            if(declarator.arrayLength is { } val) arrBounds = EsExpressionFactory.Create(val);
-            Variables.Add(new EsVariableDeclaratorName(varName, isArr, arrBounds), EsExpressionFactory.Create(declarator.variableValue));
-        }
+        foreach (var declarator in ctx.variableDeclarators().variableDeclarator()) 
+            Variables.Add((EsVariableDeclarator) new EsVariableDeclarator().FromParseRule(declarator));
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (VariableAnnotation is not null) builder.Append(VariableAnnotation.ToEnforce()).Append(' ');
         if (VariableModifiers.Count > 0) builder.Append(string.Join(' ', VariableModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
-        builder.Append(VariableType).Append(' ');
-        foreach (var (name, value) in Variables) {
-            builder.Append(name.ToEnforce());
-            if (value is not null) {
-                builder.Append(" = ").Append(value.ToEnforce());
-            }
-
-            builder.Append(", ");
-        }
+        builder.Append(VariableType).Append(' ').Append(string.Join(", ", Variables.Select(v => v.ToEnforce())));
 
         return $"{builder.ToString().TrimEnd(' ').TrimEnd(',')};";
     }

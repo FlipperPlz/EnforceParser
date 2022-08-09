@@ -42,7 +42,7 @@ public class EsFunctionDeclarationParameter : IEsDeserializable<Generated.Enforc
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (ParameterModifiers.Count > 0) builder.Append(string.Join(' ', ParameterModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');

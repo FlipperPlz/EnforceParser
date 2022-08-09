@@ -6,6 +6,6 @@ public class EsFunctionName : IEsDeserializable<Generated.EnforceParser.Identifi
         FunctionName = ctx.GetText();
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => FunctionName;
 }

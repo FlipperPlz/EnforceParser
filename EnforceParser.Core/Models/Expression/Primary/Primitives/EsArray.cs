@@ -23,7 +23,7 @@ public class EsArray : IEsPrimitiveValue<List<IEsExpression>, Generated.EnforceP
         get => (Value[i] ?? throw new Exception("Failed to find value in EsArray at index {i}"));
         set => Value[i] = value;
     }
-    
+    public override string ToString() => ToEnforce();
     public static implicit operator EsArray (IEsExpression[] b) => new(b);
     public static implicit operator IEsExpression[](EsArray b) => b.Value.ToArray();
 

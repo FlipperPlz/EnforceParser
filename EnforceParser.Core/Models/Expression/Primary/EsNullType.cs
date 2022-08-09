@@ -4,4 +4,5 @@ public class EsNullType : IEsPrimaryExpression, IEsDeserializable<Generated.Enfo
     public EsNullType() { }
     public IEsDeserializable<Generated.EnforceParser.LiteralNullContext> FromParseRule(Generated.EnforceParser.LiteralNullContext ctx) => this;
     public string ToEnforce() => "null";
+    public override string ToString() => ToEnforce();
 }

@@ -30,7 +30,7 @@ public class EsFunctionCall : IEsPrimaryExpression, IEsDeserializable<Generated.
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder(FunctionName.ToEnforce()).Append('(')
         .Append(string.Join(", ", FunctionParameters.Select(f => f.ToEnforce()))).Append(')').ToString();
 }
@@ -45,7 +45,7 @@ public class EsFunctionCallParameter : IEsFunctionCallParameter{
         ParameterValue = EsExpressionFactory.Create(expression);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => ParameterValue.ToEnforce();
 }
 
@@ -59,6 +59,6 @@ public class EsFunctionCallOptionalParameter : IEsFunctionCallParameter {
         ParameterValue = EsExpressionFactory.Create(expression);
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder(ParameterName).Append(':').Append(' ').Append(ParameterValue.ToEnforce()).ToString();
 }

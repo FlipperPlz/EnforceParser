@@ -47,12 +47,13 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (FunctionAnnotation is not null) builder.Append(FunctionAnnotation.ToEnforce()).Append(' ');
         if (FunctionModifiers.Count > 0) builder.Append(string.Join(' ', FunctionModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
-        builder.Append((ReturnType ?? new EsClassname() { Classname = "void"}).ToEnforce()).Append(' ');
+        if (ReturnType is null) builder.Append(new EsClassname() { Classname = "void" }.ToEnforce()).Append(' ');
+        else builder.Append(ReturnType.ToEnforce()).Append(' ');
         if (Deconstructor) builder.Append('~');
         builder.Append(FunctionName).Append('(').Append(string.Join(", ", FunctionParameters.Select(f => f.ToEnforce()))).Append(')');
         if (FunctionBody is null) return builder.Append(';').ToString();

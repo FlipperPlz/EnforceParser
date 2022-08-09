@@ -7,6 +7,6 @@ public class EsClassname : IEsSerializable, IEsDeserializable<Generated.EnforceP
         Classname = ctx.GetText();
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => Classname;
 }

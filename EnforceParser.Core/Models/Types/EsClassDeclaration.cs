@@ -54,11 +54,13 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         if (ClassAnnotation is not null) builder.Append(ClassAnnotation.ToEnforce()).Append(' ');
-        if (ClassModifiers.Count > 0) builder.Append(string.Join(' ', ClassModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
+        if (ClassModifiers.Count > 0)
+            builder.Append(string.Join(' ', ClassModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
+        builder.Append("class ");
         builder.Append(Classname.ToEnforce());
 
         if (ClassGenericVariables is not null) 

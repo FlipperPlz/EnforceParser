@@ -5,8 +5,8 @@ using EnforceParser.Core.Models.Types;
 namespace EnforceParser.Core.Models.Standard; 
 
 public class EsEnforceScript : IEsDeserializable<Generated.EnforceParser.ComputationalStartContext> {
-    public List<IEsGlobalStatement> GlobalStatements;
-    public List<IEsType> DeclaredTypes;
+    public List<IEsGlobalStatement> GlobalStatements { get; set; } = new();
+    public List<IEsType> DeclaredTypes { get; set; } = new();
     
     public IEsDeserializable<Generated.EnforceParser.ComputationalStartContext> FromParseRule(Generated.EnforceParser.ComputationalStartContext ctx) {
         if (ctx.globalDeclaration() is { } globalDeclarations) {

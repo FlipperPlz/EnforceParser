@@ -11,6 +11,6 @@ public class EsArrayIndexContextExpression : IEsExpression {
         Context = context;
         ArrayIndex = index;
     }
-    
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(ArrayIndex.ToEnforce()).ToString();
 }

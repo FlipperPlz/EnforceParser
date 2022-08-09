@@ -8,6 +8,7 @@ public class EsBoolean : IEsPrimitiveValue<bool, Generated.EnforceParser.Literal
         Value = ctx.LiteralBoolean().GetText() == "true";
         return this;
     }
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => Value ? "true" : "false";
     public static EsBoolean operator !(EsBoolean boolean) => new(!boolean.Value);
     public static implicit operator EsBoolean (bool b) => new(b);

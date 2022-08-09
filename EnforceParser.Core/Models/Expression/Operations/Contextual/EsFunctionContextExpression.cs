@@ -12,6 +12,6 @@ public class EsFunctionContextExpression : IEsExpression {
         FunctionCall = function;
     }
     
-    
+    public override string ToString() => ToEnforce();
     public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(FunctionCall.ToEnforce()).ToString();
 }
