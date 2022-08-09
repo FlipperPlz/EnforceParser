@@ -16,7 +16,7 @@ public static class EsExpressionFactory {
         if (ctx.THIS() is { } @this) return new EsThisExpression();
         if (ctx.SUPER() is { } @super) return new EsSuperExpression();
         if (ctx.expression() is not { } expressions) throw new Exception();
-        
+        if (ctx.objectCreation() is { } objectCreation) return (IEsExpression)new EsObjectCreationExpression().FromParseRule(objectCreation);
         switch (expressions.Length) {
             case 1:
                 //Single expression with operator (only one in this case)
@@ -88,7 +88,7 @@ public static class EsExpressionFactory {
                 }
                 break;
         }
-        throw new Exception();
+        throw new Exception(ctx.Start.Line.ToString());
     }
 
     public static IEsPrimaryExpression Create(Generated.EnforceParser.PrimaryExpressionContext ctx) {
