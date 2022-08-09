@@ -33,7 +33,7 @@ public class EsEnforceScript : IEsDeserializable<Generated.EnforceParser.Computa
 
         return this;
     }
-
+    public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
         foreach (var globalStatement in GlobalStatements) builder.Append(globalStatement.ToEnforce()).Append('\n');

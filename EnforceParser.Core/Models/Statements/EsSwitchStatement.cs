@@ -26,6 +26,7 @@ public class EsSwitchStatement : IEsStatement, IEsDeserializable<Generated.Enfor
         Cases.ForEach(c => builder.Append(c.ToEnforce()).Append('\n'));
         return builder.Append('}').ToString();
     }
+    
 }
 
 public interface IEsSwitchCase : IEsSerializable { public List<IEsStatement> CaseBody { get; set; } }
@@ -51,6 +52,7 @@ public class EsDefaultSwitchCase : IEsSwitchCase, IEsDeserializable<Generated.En
 
         throw new Exception();
     }
+    public override string ToString() => ToEnforce();
 
     public string ToEnforce() {
         var builder = new StringBuilder("default: ");
@@ -69,6 +71,7 @@ public class EsDefaultSwitchCase : IEsSwitchCase, IEsDeserializable<Generated.En
 public class EsSwitchCase : IEsSwitchCase, IEsDeserializable<Generated.EnforceParser.SwitchLabelContext> {
     public IEsExpression CaseExpression { get; set; }
     public List<IEsStatement> CaseBody { get; set; } = new();
+    public override string ToString() => ToEnforce();
 
     public IEsDeserializable<Generated.EnforceParser.SwitchLabelContext> FromParseRule(Generated.EnforceParser.SwitchLabelContext ctx) {
         if (ctx.expression() is null) throw new Exception();
