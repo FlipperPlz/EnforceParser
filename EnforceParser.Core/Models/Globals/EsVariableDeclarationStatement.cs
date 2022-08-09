@@ -11,7 +11,7 @@ namespace EnforceParser.Core.Models.Globals;
 public class EsVariableDeclarationStatement : IEsStatement, IEsGlobalStatement, IEsDeserializable<Generated.EnforceParser.VariableDeclarationContext> {
     public EsAnnotation? VariableAnnotation { get; set; } = null;
     public List<EsVariableModifier> VariableModifiers { get; set; } = new();
-    public EsClassname VariableType { get; set; }
+    public EsClassReference VariableType { get; set; }
     public List<EsVariableDeclarator> Variables { get; set; } = new();
 
 
@@ -25,6 +25,9 @@ public class EsVariableDeclarationStatement : IEsStatement, IEsGlobalStatement, 
             }
         }
 
+        if (ctx.variableType is not { } variableType) throw new Exception();
+        VariableType = (EsClassReference) new EsClassReference().FromParseRule(variableType);
+        
         if (ctx.variableDeclarators() is null) throw new Exception();
 
         foreach (var declarator in ctx.variableDeclarators().variableDeclarator()) 
