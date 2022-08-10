@@ -18,6 +18,6 @@ public class EsSuperClass {
             builder.Append('<').Append(string.Join(", ", SuperClassGenerics.Select(g => g.ToEnforce()))).Append('>');
         }
 
-        return builder.ToString();
+        return builder.Append(' ').ToString();
     }
 }

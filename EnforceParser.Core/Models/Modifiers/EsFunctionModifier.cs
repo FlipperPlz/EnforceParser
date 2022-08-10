@@ -6,5 +6,7 @@ public enum EsFunctionModifier {
     Static,
     Override,
     Proto,
-    Native
+    Native,
+    External,
+    Owned
 }

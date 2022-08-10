@@ -21,7 +21,7 @@ public class EsForStatement : IEsStatement , IEsDeserializable<Generated.Enforce
         
         ForInit = EsStatementFactory.Create(forInit);
         ForCondition = EsExpressionFactory.Create(forCondition);
-        ForIteration = EsExpressionFactory.Create(forCondition);
+        ForIteration = EsExpressionFactory.Create(forIteration);
         if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
             foreach (var statement in statementBlock.statement()) Statements.Add(EsStatementFactory.Create(statement));
             return this;

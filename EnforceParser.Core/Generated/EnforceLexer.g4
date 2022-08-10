@@ -7,7 +7,7 @@ channels { COMMENTS_CHANNEL, PREPROC }
 SINGLE_LINE_COMMENT: '//' ~[\r\n]*           -> channel(COMMENTS_CHANNEL);
 EMPTY_DELIMITED_COMMENT: ('/*/' | '/**/')    -> channel(COMMENTS_CHANNEL);
 DELIMITED_COMMENT: '/*' .*? '*/'             -> channel(COMMENTS_CHANNEL);
-PREPROCESSOR_DIRECTIVE: '#'                  -> mode(PREPROC_MODE);
+PREPROCESSOR_DIRECTIVE: '#' ~[\r\n]*         -> channel(HIDDEN)/*-> mode(PREPROC_MODE)*/;
 WHITESPACES: [\r\n \t]                       -> channel(HIDDEN);
 
 

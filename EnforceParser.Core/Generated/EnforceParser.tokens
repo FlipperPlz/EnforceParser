@@ -125,7 +125,6 @@ PREPROC_Add=124
 PREPROC_Subtract=125
 PREPROC_Semicolon=126
 PREPROC_Assign=127
-'#'=4
 'class'=6
 'enum'=7
 'switch'=8

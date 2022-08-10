@@ -11,14 +11,14 @@ varAndFunctionBlock: (globalDeclaration) | LCurly (globalDeclaration)* RCurly;
 variableDeclaration: annotation? variableModifier* variableType=classReference variableDeclarators Semicolon;
 variableDeclarators: variableDeclarator (Comma variableDeclarator)*;
 variableDeclarator: variableName=identifier (LSBracket arrayLength=expression? RSBracket)? (Assign variableValue=expression)?;
-functionDeclaration: annotation? functionModifier* returnType=classReference deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
+functionDeclaration: annotation? functionModifier* returnType=classReference (LSBracket RSBracket)? deconstructor=BitwiseNot? functionName=identifier functionParameters statementSingleOrBlock? Semicolon?;
 functionParameters: LParenthesis (functionParameter (Comma functionParameter)*)? RParenthesis;
 functionParameter: variableModifier* parameterType=classReference variableDeclarator;
 
 //SECTION: Classes & Enums
 classDeclaration: annotation? typeModifer* CLASS classname=identifier genericTypeDeclarationList? superclass=typeExtension_Child? classBody=varAndFunctionBlock? Semicolon?; 
 enumDeclaration: annotation? typeModifer* ENUM enumname=identifier superenum=typeExtension_Child? enumBody Semicolon?;
-enumBody: LCurly (enumValue ((Comma|WHITESPACES) enumValue)*)? RCurly;
+enumBody: LCurly (enumValue ((Comma|WHITESPACES) enumValue)*)? Comma? RCurly Semicolon?;
 enumValue: itemname=identifier (Assign itemValue=primaryExpression)?;
 
 //SECTION: Expressions & Statements
@@ -120,8 +120,8 @@ switchLabel: CASE (expression) Colon (statement* | statementSingleOrBlock);
 defaultSwitchLabel: DEFAULT Colon (statement* | statementSingleOrBlock);
 switchBlockStatementGroup: switchLabel | defaultSwitchLabel;
 emptyBlock: LCurly RCurly;
-typedefDeclaration: annotation? 'typedef' fromType=typedefType toType=identifier Semicolon;
-typedefType: keyword | classReference;
+typedefDeclaration: annotation? 'typedef' fromType=typedefType (LSBracket RSBracket)? toType=identifier Semicolon;
+typedefType: keyword | classReference ;
 keyword: CLASS | ENUM | SWITCH | EXTENDS | CONST | BREAK | CASE | ELSE | FOR | CONTINUE | FOREACH | IF | NEW | RETURN | THIS | THREAD | VOID | WHILE | AUTOPTR | AUTO | REF | NULL | NOTNULL | FUNC | NATIVE | VOLATILE | PROTO | STATIC | OWNED | REFERENCE | OUT | PROTECTED | EVENT | TYPEDEF | MODDED | OVERRIDE | SEALED | INOUT | SUPER | TYPENAME | POINTER | GOTO | PRIVATE | EXTERNAL | DELETE | LOCAL | TYPE_INT | TYPE_FLOAT | TYPE_BOOL | TYPE_STRING | TYPE_VECTOR | LiteralBoolean | DEFAULT;
 
 typeList: Less genericType (Comma genericType)* Greater;
@@ -134,18 +134,21 @@ classReference: classname=identifier typeList?;
 //SECTION: Modifiers
 typeModifer: MODDED | SEALED;
 variableModifier: PRIVATE |
-               PROTECTED |
-               STATIC |
-               AUTOPTR |
-               PROTO |
-               REF | REFERENCE |
-               CONST |
-               OUT |
-               NOTNULL |
+               PROTECTED  |
+               STATIC     |
+               AUTOPTR    |
+               PROTO      |
+               REF        |
+               REFERENCE  |
+               CONST      |
+               OUT        |
+               NOTNULL    |
                INOUT;
 functionModifier: PRIVATE |
-               PROTECTED |
-               STATIC |
-               OVERRIDE |
-               PROTO |
+               EXTERNAL   |
+               PROTECTED  |
+               STATIC     |
+               OVERRIDE   |
+               OWNED      |
+               PROTO      |
                NATIVE;

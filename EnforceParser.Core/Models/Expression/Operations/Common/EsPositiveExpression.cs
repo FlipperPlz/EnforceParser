@@ -8,5 +8,4 @@ public class EsPositiveExpression : IEsPrimaryExpression {
     public EsPositiveExpression(IEsExpression expression) => Expression = expression;
     public string ToEnforce() => new StringBuilder("+").Append(Expression.ToEnforce()).ToString();
     public override string ToString() => ToEnforce();
-
 }

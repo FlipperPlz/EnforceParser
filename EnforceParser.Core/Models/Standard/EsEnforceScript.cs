@@ -36,8 +36,8 @@ public class EsEnforceScript : IEsDeserializable<Generated.EnforceParser.Computa
     public override string ToString() => ToEnforce();
     public string ToEnforce() {
         var builder = new StringBuilder();
-        foreach (var globalStatement in GlobalStatements) builder.Append(globalStatement.ToEnforce()).Append('\n');
-        foreach (var type in DeclaredTypes) builder.Append(type.ToEnforce()).Append('\n');
+        foreach (var globalStatement in GlobalStatements) builder.Append(globalStatement.ToEnforce()).Append("\n\n");
+        foreach (var type in DeclaredTypes) builder.Append(type.ToEnforce()).Append("\n\n");
         return builder.ToString();
     }
 }
