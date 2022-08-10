@@ -18,8 +18,8 @@ functionParameter: variableModifier* parameterType=classReference variableDeclar
 //SECTION: Classes & Enums
 classDeclaration: annotation? typeModifer* CLASS classname=identifier genericTypeDeclarationList? superclass=typeExtension_Child? classBody=varAndFunctionBlock? Semicolon?; 
 enumDeclaration: annotation? typeModifer* ENUM enumname=identifier superenum=typeExtension_Child? enumBody Semicolon?;
-enumBody: LCurly (enumValue ((Comma|WHITESPACES) enumValue)*)? Comma? RCurly Semicolon?;
-enumValue: itemname=identifier (Assign itemValue=primaryExpression)?;
+enumBody: LCurly (enumValue ((Comma|WHITESPACES|Semicolon) enumValue)*)? Comma? Semicolon? RCurly Semicolon?;
+enumValue: itemname=identifier (Assign itemValue=expression)?;
 
 //SECTION: Expressions & Statements
 expression:  primaryExpression                                                            |
@@ -32,12 +32,13 @@ expression:  primaryExpression                                                  
                  esFunction    = functionCall
                 )                                                                         |
              objectCreation                                                               |
+             castExpression                                                               |
              expression suffix=(Increment | Decrement)                                    |
-             prefix=(Increment | Decrement | Bang | Add | Subtract) expression        |
-             expression (parenthesisedExpression) expression                              |
+             prefix=(Increment | Decrement | Bang | Add | Subtract) expression            |
              expression op=(Multiply | Divide | Modulo) expression                        |
              expression op=(/*Increment | Decrement |*/ Add | Subtract) expression        |
-             expression op=(LShift | RShift) expression                                   |
+             expression rightShift expression                                          |
+             expression leftShift expression                                           |
              expression op=(LessEqual | GreaterEqual | Less | Greater) expression         |
              expression op=(Equal | Inequal) expression                                   |
              expression op=(BitwiseOr | BitwiseAnd | BitwiseNot | BitwiseXor) expression  |
@@ -55,6 +56,8 @@ expression:  primaryExpression                                                  
                   RShift_Assign
                  )
                  expression                                                               ;
+
+castExpression: LParenthesis cast=classReference RParenthesis expression;
 primaryExpression:  esFunction    = functionCall              |
                     esString      = literalString             |
                     esInt         = literalInteger            |
@@ -64,10 +67,10 @@ primaryExpression:  esFunction    = functionCall              |
                     esArray       = literalArray              |
                     esNull        = literalNull               |
                     esVariable    = identifier                |
-//                  esGeneric     = identifier typeList       |
+                    esGeneric     = classReference            |
                     esArrayIndex  = arrayIndexExpression      ;
 objectCreation: NEW variableModifier* objectName=identifier typeList? functionCallParameters?;
-functionCall: identifier functionCallParameters;
+functionCall: identifier functionCallParameters (LSBracket expression? RSBracket)?;
 parenthesisedExpression: LParenthesis expression RParenthesis;
 functionCallParameters: LParenthesis functionCallParameterList? RParenthesis;
 functionCallParameterList: functionCallParameter (Comma functionCallParameter)*;
@@ -89,6 +92,7 @@ statement:   expressionaryStatement = expression Semicolon          |
              esReturn               = returnStatement               |
              esBreak                = breakStatement                |
              esContinue             = continueStatement             |
+             esStatementBlock       = statementBlock                |
              esGoto                 = gotoStatement /* Unused */    |
              esSemicolon            = Semicolon                     ;
 gotoStatement: GOTO expression Semicolon;
@@ -96,7 +100,7 @@ ifStatement: IF condition=parenthesisedExpression ifBody=statementSingleOrBlock 
 elseStatement: ELSE elseBody=statementSingleOrBlock;
 deleteStatement: DELETE expression;
 forStatement: FOR LParenthesis forControl RParenthesis loopBody=statementSingleOrBlock;
-foreachStatement: FOREACH LParenthesis foreachVariable Colon enumerating=expression RParenthesis loopBody=statementSingleOrBlock;
+foreachStatement: FOREACH LParenthesis foreachVariable (Comma foreachVariable)* Colon enumerating=expression RParenthesis loopBody=statementSingleOrBlock;
 whileStatement: WHILE condition=parenthesisedExpression loopBody=statementSingleOrBlock;
 switchStatement: SWITCH parenthesisedExpression LCurly switchBlockStatementGroup* /*switchLabel**/ RCurly;
 returnStatement: RETURN expression? Semicolon;
@@ -105,7 +109,7 @@ continueStatement: CONTINUE Semicolon;
 
 //SECTION: Common Rules
 forControl: forInit=statement forCondition=expression Semicolon forIteration=expression Semicolon*;
-typeExtension_Child: extends=(EXTENDS | Colon) classname=identifier genericTypeDeclarationList?;
+typeExtension_Child: extends=(EXTENDS | Colon) classname=classReference;
 identifier: IDENTIFIER | TYPE_INT | TYPE_BOOL | TYPE_FLOAT | TYPE_STRING | TYPE_VECTOR | VOID | AUTO | TYPENAME | FUNC;
 expressionList: expression (Comma expression)*;
 arrayIndex: LSBracket expression? RSBracket;
@@ -115,7 +119,7 @@ literalInteger: LiteralInteger;
 literalNull: NULL;
 literalFloat: LiteralFloat; //TODO: Scientific Notation
 literalBoolean: LiteralBoolean;
-foreachVariable: iteratedVariableType=identifier iteratedVariableName=identifier;
+foreachVariable: iteratedVariableType=classReference iteratedVariableName=identifier;
 switchLabel: CASE (expression) Colon (statement* | statementSingleOrBlock); 
 defaultSwitchLabel: DEFAULT Colon (statement* | statementSingleOrBlock);
 switchBlockStatementGroup: switchLabel | defaultSwitchLabel;
@@ -124,13 +128,15 @@ typedefDeclaration: annotation? 'typedef' fromType=typedefType (LSBracket RSBrac
 typedefType: keyword | classReference ;
 keyword: CLASS | ENUM | SWITCH | EXTENDS | CONST | BREAK | CASE | ELSE | FOR | CONTINUE | FOREACH | IF | NEW | RETURN | THIS | THREAD | VOID | WHILE | AUTOPTR | AUTO | REF | NULL | NOTNULL | FUNC | NATIVE | VOLATILE | PROTO | STATIC | OWNED | REFERENCE | OUT | PROTECTED | EVENT | TYPEDEF | MODDED | OVERRIDE | SEALED | INOUT | SUPER | TYPENAME | POINTER | GOTO | PRIVATE | EXTERNAL | DELETE | LOCAL | TYPE_INT | TYPE_FLOAT | TYPE_BOOL | TYPE_STRING | TYPE_VECTOR | LiteralBoolean | DEFAULT;
 
-typeList: Less genericType (Comma genericType)* Greater;
-genericType: variableModifier* type=identifier;
+typeList: '<' genericType  (Comma genericType)* '>';
+genericType: variableModifier* type=classReference ;
 
 genericTypeDeclarationList:  Less genericTypeDeclaration (Comma genericTypeDeclaration)* Greater;
-genericTypeDeclaration: variableModifier* type=classReference typeName=identifier (LSBracket RSBracket)?; 
+genericTypeDeclaration: variableModifier* type=classReference typeName=identifier  (LSBracket RSBracket)?; 
 annotation: LSBracket functionCall RSBracket;
 classReference: classname=identifier typeList?;
+leftShift: Less Less;
+rightShift: Greater Greater;
 //SECTION: Modifiers
 typeModifer: MODDED | SEALED;
 variableModifier: PRIVATE |
@@ -141,6 +147,7 @@ variableModifier: PRIVATE |
                REF        |
                REFERENCE  |
                CONST      |
+               OWNED      |
                OUT        |
                NOTNULL    |
                INOUT;
@@ -151,4 +158,6 @@ functionModifier: PRIVATE |
                OVERRIDE   |
                OWNED      |
                PROTO      |
-               NATIVE;
+               NATIVE     |
+               VOLATILE   |
+               EVENT      ;

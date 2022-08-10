@@ -6,7 +6,7 @@ namespace EnforceParser.Core.Models.Generics;
 
 public class EsGenericType : IEsSerializable, IEsDeserializable<Generated.EnforceParser.GenericTypeContext> {
     public List<EsVariableModifier> Modifiers = new();
-    public EsClassname Type;
+    public EsClassReference Type;
     
     public IEsDeserializable<Generated.EnforceParser.GenericTypeContext> FromParseRule(Generated.EnforceParser.GenericTypeContext ctx) {
         if (ctx.variableModifier() is { } variableModifiers) {
@@ -17,8 +17,8 @@ public class EsGenericType : IEsSerializable, IEsDeserializable<Generated.Enforc
             }
         }
 
-        if (ctx.identifier() is null) throw new Exception();
-        Type = (EsClassname) new EsClassname().FromParseRule(ctx.identifier());
+        if (ctx.classReference() is null) throw new Exception();
+        Type = (EsClassReference) new EsClassReference().FromParseRule(ctx.classReference());
         return this;
     }
     public override string ToString() => ToEnforce();

@@ -217,6 +217,18 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpression([NotNull] EnforceParser.ExpressionContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.castExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCastExpression([NotNull] EnforceParser.CastExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.castExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCastExpression([NotNull] EnforceParser.CastExpressionContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.primaryExpression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -792,6 +804,30 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitClassReference([NotNull] EnforceParser.ClassReferenceContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.leftShift"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLeftShift([NotNull] EnforceParser.LeftShiftContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.leftShift"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLeftShift([NotNull] EnforceParser.LeftShiftContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.rightShift"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRightShift([NotNull] EnforceParser.RightShiftContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.rightShift"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRightShift([NotNull] EnforceParser.RightShiftContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.typeModifer"/>.
 	/// <para>The default implementation does nothing.</para>

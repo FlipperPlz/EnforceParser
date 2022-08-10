@@ -2,6 +2,7 @@
 
 public enum EsVariableModifier {
     Private,
+    Protected,
     Static,
     Autoptr,
     Proto,
@@ -9,6 +10,7 @@ public enum EsVariableModifier {
     Reference,
     Const,
     Out,
+    Owned,
     Notnull,
     Inout
 }

@@ -32,15 +32,8 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
         }
 
         if (ctx.superclass is { } superclass) {
-            EsClassname superClassName;
-            List<EsGenericTypeDeclaration>? superGenerics = null;
-            if (superclass.classname is not { }) throw new Exception();
-            superClassName = (EsClassname) new EsClassname().FromParseRule(superclass.classname);
-            if (superclass.genericTypeDeclarationList() is { } genericList) {
-                superGenerics = genericList.genericTypeDeclaration().Select(generic => (EsGenericTypeDeclaration)new EsGenericTypeDeclaration().FromParseRule(generic)).ToList();
-            }
-
-            SuperClass = new EsSuperClass(superClassName, superGenerics);
+            if (superclass.classReference() is null) throw new Exception();
+            SuperClass = new EsSuperClass((EsClassReference) new EsClassReference().FromParseRule(superclass.classReference()));
         }
 
         if (ctx.classBody is { } body) {

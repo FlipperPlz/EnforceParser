@@ -17,6 +17,7 @@ public static class EsStatementFactory {
         if (ctx.esFor is { } @for) return (IEsStatement) new EsForStatement().FromParseRule(@for);
         if (ctx.esSwitch is { } @switch) return (IEsStatement) new EsSwitchStatement().FromParseRule(@switch);
         if (ctx.esDelete is { } delete) return (IEsStatement) new EsDeleteStatement().FromParseRule(delete);
+        if (ctx.esStatementBlock is { } block) return (IEsStatement) new EsBlockStatement().FromParseRule(block);
         if (ctx.esVariableDeclaration is { } variableDeclaration) return (IEsStatement) new EsVariableDeclarationStatement().FromParseRule(variableDeclaration);
         throw new Exception("The rule you have tried to call is not supported by the serialization base.");
     }

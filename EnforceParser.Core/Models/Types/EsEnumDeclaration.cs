@@ -23,15 +23,9 @@ public class EsEnumDeclaration : IEsDeserializable<Generated.EnforceParser.EnumD
                 else throw new Exception($"Failed to parse enum modifier from \"{modifierText}\".");
             }
         }
-        if (ctx.superenum is { } superenum) {
-            EsClassname superEnumName;
-            List<EsGenericTypeDeclaration>? superGenerics = null;
-            if (superenum.classname is not { }) throw new Exception();
-            superEnumName = (EsClassname) new EsClassname().FromParseRule(superenum.classname);
-            if (superenum.genericTypeDeclarationList() is { } genericList) superGenerics = genericList.genericTypeDeclaration().Select(generic => (EsGenericTypeDeclaration) new EsGenericTypeDeclaration().FromParseRule(generic)).ToList();
-            
-
-            SuperEnum = new EsSuperClass(superEnumName, superGenerics);
+        if (ctx.superenum is { } superclass) {
+            if (superclass.classReference() is null) throw new Exception();
+            SuperEnum = new EsSuperClass((EsClassReference) new EsClassReference().FromParseRule(superclass.classReference()));
         }
 
         if (ctx.enumBody() is { } enumBody) {

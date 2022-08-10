@@ -10,6 +10,8 @@ namespace EnforceParser.Core.Models.Expression.Primary;
 public class EsFunctionCall : IEsPrimaryExpression, IEsDeserializable<Generated.EnforceParser.FunctionCallContext> {
     public EsFunctionName FunctionName { get; set; }
     public List<IEsFunctionCallParameter> FunctionParameters { get; set; } = new();
+    public bool ReturnsArray { get; set; } = false;
+    public IEsExpression? ArrayIndex { get; set; } = null;
 
 
     public IEsDeserializable<Generated.EnforceParser.FunctionCallContext> FromParseRule(Generated.EnforceParser.FunctionCallContext ctx) {
@@ -28,11 +30,24 @@ public class EsFunctionCall : IEsPrimaryExpression, IEsDeserializable<Generated.
             }            
         }
 
+        if (ctx.RSBracket() is not null) ReturnsArray = true;
+        if (ctx.expression() is not null) ArrayIndex = EsExpressionFactory.Create(ctx.expression());
+
         return this;
     }
     public override string ToString() => ToEnforce();
-    public string ToEnforce() => new StringBuilder(FunctionName.ToEnforce()).Append('(')
-        .Append(string.Join(", ", FunctionParameters.Select(f => f.ToEnforce()))).Append(')').ToString();
+
+    public string ToEnforce() {
+        var builder = new StringBuilder(FunctionName.ToEnforce()).Append('(')
+            .Append(string.Join(", ", FunctionParameters.Select(f => f.ToEnforce()))).Append(')');
+        if (ReturnsArray) {
+            builder.Append('[');
+            if(ArrayIndex is { } index) builder.Append(index.ToEnforce());
+            builder.Append(']');
+        }
+
+        return builder.ToString();
+    }
 }
 
 public interface IEsFunctionCallParameter : IEsDeserializable<Generated.EnforceParser.FunctionCallParameterContext> { }

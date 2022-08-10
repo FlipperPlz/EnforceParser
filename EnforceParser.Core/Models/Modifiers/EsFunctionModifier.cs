@@ -8,5 +8,7 @@ public enum EsFunctionModifier {
     Proto,
     Native,
     External,
-    Owned
+    Owned,
+    Volatile,
+    Event
 }

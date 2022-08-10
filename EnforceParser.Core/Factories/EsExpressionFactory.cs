@@ -1,4 +1,5 @@
-﻿using EnforceParser.Core.Models.Expression;
+﻿using Antlr4.Runtime.Misc;
+using EnforceParser.Core.Models.Expression;
 using EnforceParser.Core.Models.Expression.Operations.Binary;
 using EnforceParser.Core.Models.Expression.Operations.Binary.Logical;
 using EnforceParser.Core.Models.Expression.Operations.Binary.Relational;
@@ -7,6 +8,7 @@ using EnforceParser.Core.Models.Expression.Operations.Contextual;
 using EnforceParser.Core.Models.Expression.Operations.Unary;
 using EnforceParser.Core.Models.Expression.Primary;
 using EnforceParser.Core.Models.Expression.Primary.Primitives;
+using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Factories;
 
@@ -17,6 +19,7 @@ public static class EsExpressionFactory {
         if (ctx.SUPER() is { } @super) return new EsSuperExpression();
         if (ctx.expression() is not { } expressions) throw new Exception();
         if (ctx.objectCreation() is { } objectCreation) return (IEsExpression)new EsObjectCreationExpression().FromParseRule(objectCreation);
+        if (ctx.castExpression() is { } cast) return (IEsExpression) new EsCastedExpression().FromParseRule(cast);
         switch (expressions.Length) {
             case 1:
                 //Single expression with operator (only one in this case)
@@ -51,6 +54,9 @@ public static class EsExpressionFactory {
                 }
                 break;
             case 2:
+                if (ctx.rightShift() is not null) return new EsRightShiftExpression(Create(expressions[0]), Create(expressions[1]));
+                if (ctx.leftShift() is not null)
+                    return new EsLeftShiftExpression(Create(expressions[0]), Create(expressions[1]));
                 if (ctx.op is { } @operator) {
                     if (expressions[0] is not null && expressions[1] is not null) return @operator.Text switch {
                         "*" => new EsMultiplicationExpression(Create(expressions[0]), Create(expressions[1])),
@@ -60,8 +66,6 @@ public static class EsExpressionFactory {
                         "+" => new EsAdditionExpression(Create(expressions[0]), Create(expressions[1])),
                         "--" => throw new Exception("probably not working/used in enforce."),
                         "-" => new EsSubtractionExpression(Create(expressions[0]), Create(expressions[1])),
-                        "<<" => new EsLeftShiftExpression(Create(expressions[0]), Create(expressions[1])),
-                        ">>" => new EsRightShiftExpression(Create(expressions[0]), Create(expressions[1])),
                         "<=" => new EsLessThenOrEqualExpression(Create(expressions[0]), Create(expressions[1])),
                         "<" => new EsLessThenExpression(Create(expressions[0]), Create(expressions[1])),
                         ">=" => new EsMoreThenOrEqualExpression(Create(expressions[0]), Create(expressions[1])),
@@ -88,7 +92,10 @@ public static class EsExpressionFactory {
                 }
                 break;
         }
-        throw new Exception(ctx.Start.Line.ToString());
+
+        
+        
+        throw new Exception(ctx.Start.InputStream.GetText(new Interval(ctx.Start.StartIndex, ctx.Stop.StopIndex)));
     }
 
     public static IEsPrimaryExpression Create(Generated.EnforceParser.PrimaryExpressionContext ctx) {
@@ -112,6 +119,8 @@ public static class EsExpressionFactory {
             return (IEsPrimaryExpression) new EsVariableName().FromParseRule(ctx.esVariable);
         else if (ctx.esArrayIndex is { }) 
             return (IEsPrimaryExpression) new EsArrayIndex().FromParseRule(ctx.esArrayIndex);
+        else if (ctx.esGeneric is { })
+            return (IEsPrimaryExpression) new EsClassReference().FromParseRule(ctx.esGeneric);
         else throw new Exception("The rule you have tried to call is not supported by the serialization base.");
     }
 

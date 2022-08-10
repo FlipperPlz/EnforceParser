@@ -1,9 +1,10 @@
 ﻿using System.Text;
+using EnforceParser.Core.Models.Expression.Primary;
 using EnforceParser.Core.Models.Generics;
 
 namespace EnforceParser.Core.Models.Scope; 
 
-public class EsClassReference : IEsDeserializable<Generated.EnforceParser.ClassReferenceContext> {
+public class EsClassReference : IEsDeserializable<Generated.EnforceParser.ClassReferenceContext>, IEsPrimaryExpression{
     public EsClassname Classname { get; set; }
     public List<EsGenericType>? Generics { get; set; }
     

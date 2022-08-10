@@ -182,6 +182,16 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExpression([NotNull] EnforceParser.ExpressionContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.castExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCastExpression([NotNull] EnforceParser.CastExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.castExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCastExpression([NotNull] EnforceParser.CastExpressionContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.primaryExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -661,6 +671,26 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitClassReference([NotNull] EnforceParser.ClassReferenceContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.leftShift"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLeftShift([NotNull] EnforceParser.LeftShiftContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.leftShift"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLeftShift([NotNull] EnforceParser.LeftShiftContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.rightShift"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRightShift([NotNull] EnforceParser.RightShiftContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.rightShift"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRightShift([NotNull] EnforceParser.RightShiftContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.typeModifer"/>.
 	/// </summary>
