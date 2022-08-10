@@ -72,7 +72,7 @@ public class EsClassDeclaration : IEsDeserializable<Generated.EnforceParser.Clas
             builder.Append(ClassBody[0].ToEnforce());
         } else {
             builder.Append('{').Append('\n');
-            ClassBody.ForEach(s => builder.Append(s.ToEnforce()).Append('\n'));
+            ClassBody.ForEach(s => builder.Append(s.ToEnforce()).Append('\n').Append('\n'));
             builder.Append('}');
         }
 

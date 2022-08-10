@@ -10,6 +10,7 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
     public EsAnnotation? FunctionAnnotation { get; set; } = null;
     public List<EsFunctionModifier> FunctionModifiers { get; set; } = new();
     public EsClassReference? ReturnType { get; set; } = null;//Null for void
+    public bool ReturnsArray { get; set; } = false;
     public bool Deconstructor { get; set; } = false;
     public EsFunctionName FunctionName { get; set; }
     public List<EsFunctionDeclarationParameter> FunctionParameters { get; set; } = new();
@@ -24,6 +25,7 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
             else throw new Exception($"Failed to parse function modifier from \"{modifierText}\".");
         }
 
+        if (ctx.LSBracket() is not null) ReturnsArray = true;
         if (ctx.returnType is null) throw new Exception();
         if (ctx.returnType.GetText() != "void") ReturnType = (EsClassReference?)new EsClassReference().FromParseRule(ctx.returnType);
         if (ctx.deconstructor is not null) Deconstructor = true;
@@ -52,8 +54,14 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
         var builder = new StringBuilder();
         if (FunctionAnnotation is not null) builder.Append(FunctionAnnotation.ToEnforce()).Append(' ');
         if (FunctionModifiers.Count > 0) builder.Append(string.Join(' ', FunctionModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
-        if (ReturnType is null) builder.Append(new EsClassname() { Classname = "void" }.ToEnforce()).Append(' ');
-        else builder.Append(ReturnType.ToEnforce()).Append(' ');
+        if (ReturnType is null) {
+            builder.Append(new EsClassname() { Classname = "void" }.ToEnforce());
+        }
+
+        else builder.Append(ReturnType.ToEnforce());
+
+        if (ReturnsArray) builder.Append("[]");
+        builder.Append(' ');
         if (Deconstructor) builder.Append('~');
         builder.Append(FunctionName).Append('(').Append(string.Join(", ", FunctionParameters.Select(f => f.ToEnforce()))).Append(')');
         if (FunctionBody is null) return builder.Append(';').ToString();
