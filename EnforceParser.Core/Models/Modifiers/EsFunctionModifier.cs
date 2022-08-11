@@ -10,5 +10,7 @@ public enum EsFunctionModifier {
     External,
     Owned,
     Volatile,
-    Event
+    Event,
+    Ref,
+    Reference
 }

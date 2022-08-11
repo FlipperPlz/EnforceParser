@@ -5,12 +5,12 @@ namespace EnforceParser.Core.Models.Expression.Operations.Contextual;
 
 public class EsArrayIndexContextExpression : IEsExpression {
     public IEsExpression Context { get; set; }
-    public EsArrayIndex ArrayIndex { get; set; }
+    public EsArrayIndexExpression ArrayIndexExpression { get; set; }
 
-    public EsArrayIndexContextExpression(IEsExpression context, EsArrayIndex index) {
+    public EsArrayIndexContextExpression(IEsExpression context, EsArrayIndexExpression indexExpression) {
         Context = context;
-        ArrayIndex = index;
+        ArrayIndexExpression = indexExpression;
     }
     public override string ToString() => ToEnforce();
-    public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(ArrayIndex.ToEnforce()).ToString();
+    public string ToEnforce() => new StringBuilder(Context.ToEnforce()).Append('.').Append(ArrayIndexExpression.ToEnforce()).ToString();
 }

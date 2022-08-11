@@ -34,7 +34,7 @@ expression:  primaryExpression                                                  
              objectCreation                                                               |
              castExpression                                                               |
              expression suffix=(Increment | Decrement)                                    |
-             prefix=(Increment | Decrement | Bang | Add | Subtract) expression            |
+             prefix=(Increment | Decrement | Bang | BitwiseNot | Add | Subtract) expression            |
              expression op=(Multiply | Divide | Modulo) expression                        |
              expression op=(/*Increment | Decrement |*/ Add | Subtract) expression        |
              expression rightShift expression                                          |
@@ -76,7 +76,7 @@ functionCallParameters: LParenthesis functionCallParameterList? RParenthesis;
 functionCallParameterList: functionCallParameter (Comma functionCallParameter)*;
 functionCallParameter: expression | optionalParameter;
 optionalParameter: argumentName=identifier Colon argumentValue=expression;
-arrayIndexExpression: identifier arrayIndex;
+arrayIndexExpression: identifier arrayIndex*;
 
 //Notice: Statements go under here
 statementSingleOrBlock: statement | statementBlock;
@@ -94,6 +94,7 @@ statement:   expressionaryStatement = expression Semicolon          |
              esContinue             = continueStatement             |
              esStatementBlock       = statementBlock                |
              esGoto                 = gotoStatement /* Unused */    |
+             esLambda               = lambdaStatement               |
              esSemicolon            = Semicolon                     ;
 gotoStatement: GOTO expression Semicolon;
 ifStatement: IF condition=parenthesisedExpression ifBody=statementSingleOrBlock elseStatement?;
@@ -106,12 +107,12 @@ switchStatement: SWITCH parenthesisedExpression LCurly switchBlockStatementGroup
 returnStatement: RETURN expression? Semicolon;
 breakStatement: BREAK Semicolon;
 continueStatement: CONTINUE Semicolon;
-
+lambdaStatement: lambdaType=classReference lambdaName=identifier  lambdaArguments=functionCallParameters Semicolon;
 //SECTION: Common Rules
-forControl: forInit=statement forCondition=expression Semicolon forIteration=expression Semicolon*;
+forControl: forInit=statement forCondition=expression Semicolon (forIteration=expression)? Semicolon*;
 typeExtension_Child: extends=(EXTENDS | Colon) classname=classReference;
 identifier: IDENTIFIER | TYPE_INT | TYPE_BOOL | TYPE_FLOAT | TYPE_STRING | TYPE_VECTOR | VOID | AUTO | TYPENAME | FUNC;
-expressionList: expression (Comma expression)*;
+expressionList: expression (Comma expression)* Comma*;
 arrayIndex: LSBracket expression? RSBracket;
 literalArray: LCurly expressionList? RCurly;
 literalString: LiteralString | PREPROC_LINE | PREPROC_FILE;
@@ -127,14 +128,12 @@ emptyBlock: LCurly RCurly;
 typedefDeclaration: annotation? 'typedef' fromType=typedefType (LSBracket RSBracket)? toType=identifier Semicolon;
 typedefType: keyword | classReference ;
 keyword: CLASS | ENUM | SWITCH | EXTENDS | CONST | BREAK | CASE | ELSE | FOR | CONTINUE | FOREACH | IF | NEW | RETURN | THIS | THREAD | VOID | WHILE | AUTOPTR | AUTO | REF | NULL | NOTNULL | FUNC | NATIVE | VOLATILE | PROTO | STATIC | OWNED | REFERENCE | OUT | PROTECTED | EVENT | TYPEDEF | MODDED | OVERRIDE | SEALED | INOUT | SUPER | TYPENAME | POINTER | GOTO | PRIVATE | EXTERNAL | DELETE | LOCAL | TYPE_INT | TYPE_FLOAT | TYPE_BOOL | TYPE_STRING | TYPE_VECTOR | LiteralBoolean | DEFAULT;
-
 typeList: '<' genericType  (Comma genericType)* '>';
 genericType: variableModifier* type=classReference ;
-
 genericTypeDeclarationList:  Less genericTypeDeclaration (Comma genericTypeDeclaration)* Greater;
 genericTypeDeclaration: variableModifier* type=classReference typeName=identifier  (LSBracket RSBracket)?; 
 annotation: LSBracket functionCall RSBracket;
-classReference: classname=identifier typeList?;
+classReference: classname=identifier typeList? arrayIndex*;
 leftShift: Less Less;
 rightShift: Greater Greater;
 //SECTION: Modifiers
@@ -150,13 +149,16 @@ variableModifier: PRIVATE |
                OWNED      |
                OUT        |
                NOTNULL    |
-               INOUT;
+               INOUT      |
+               LOCAL      ;
 functionModifier: PRIVATE |
                EXTERNAL   |
                PROTECTED  |
                STATIC     |
                OVERRIDE   |
                OWNED      |
+               REF        | 
+               REFERENCE  |
                PROTO      |
                NATIVE     |
                VOLATILE   |

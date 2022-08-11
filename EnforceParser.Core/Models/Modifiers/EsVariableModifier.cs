@@ -12,5 +12,6 @@ public enum EsVariableModifier {
     Out,
     Owned,
     Notnull,
-    Inout
+    Inout,
+    Local
 }

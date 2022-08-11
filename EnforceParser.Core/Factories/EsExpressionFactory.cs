@@ -45,7 +45,7 @@ public static class EsExpressionFactory {
                     if (expressions[0] is not null) return prefix.Text switch {
                         "++" => new EsIncrementExpression(Create(expressions[0]), true),
                         "--" => new EsDecrementExpression(Create(expressions[0]), true),
-                        "~" => throw new Exception("probably not working/used in enforce."),
+                        "~" => new EsNegationalBitwiseExpression(Create(expressions[0])),
                         "+" => new EsPositiveExpression(Create(expressions[0])),
                         "-" => new EsNegativeExpression(Create(expressions[0])),
                         "!" => new EsNegationalExpression(Create(expressions[0])),
@@ -118,7 +118,7 @@ public static class EsExpressionFactory {
         else if (ctx.esVariable is { })
             return (IEsPrimaryExpression) new EsVariableName().FromParseRule(ctx.esVariable);
         else if (ctx.esArrayIndex is { }) 
-            return (IEsPrimaryExpression) new EsArrayIndex().FromParseRule(ctx.esArrayIndex);
+            return (IEsPrimaryExpression) new EsArrayIndexExpression().FromParseRule(ctx.esArrayIndex);
         else if (ctx.esGeneric is { })
             return (IEsPrimaryExpression) new EsClassReference().FromParseRule(ctx.esGeneric);
         else throw new Exception("The rule you have tried to call is not supported by the serialization base.");
@@ -126,7 +126,7 @@ public static class EsExpressionFactory {
 
     private static IEsExpression CreateContextChange(Generated.EnforceParser.ExpressionContext ctx) {
         if (ctx.esFunction is { } functionCall) return new EsFunctionContextExpression(Create(ctx.expression()[0]), (EsFunctionCall)new EsFunctionCall().FromParseRule(functionCall));
-        if (ctx.esArrayIndex is { } arrayIndex) return new EsArrayIndexContextExpression(Create(ctx.expression()[0]), (EsArrayIndex)new EsArrayIndex().FromParseRule(arrayIndex));
+        if (ctx.esArrayIndex is { } arrayIndex) return new EsArrayIndexContextExpression(Create(ctx.expression()[0]), (EsArrayIndexExpression)new EsArrayIndexExpression().FromParseRule(arrayIndex));
         if (ctx.esVariable is { } variable) return new EsVariableContextExpression(Create(ctx.expression()[0]), (EsVariableName)new EsVariableName().FromParseRule(variable));
         throw new Exception("The rule you have tried to call is not supported by the serialization base.");
     }

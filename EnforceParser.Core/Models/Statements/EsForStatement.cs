@@ -7,7 +7,7 @@ namespace EnforceParser.Core.Models.Statements;
 public class EsForStatement : IEsStatement , IEsDeserializable<Generated.EnforceParser.ForStatementContext> {
     public IEsStatement ForInit { get; set; }
     public IEsExpression ForCondition { get; set; }
-    public IEsExpression ForIteration { get; set; }
+    public IEsExpression? ForIteration { get; set; }
     
     public List<IEsStatement> Statements { get; set; } = new();
 
@@ -17,11 +17,11 @@ public class EsForStatement : IEsStatement , IEsDeserializable<Generated.Enforce
         if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) throw new Exception();
         if (forControl.forInit is not { } forInit) throw new Exception();
         if (forControl.forCondition is not { } forCondition) throw new Exception();
-        if (forControl.forIteration is not { } forIteration) throw new Exception();
+        if (forControl.forIteration is { } forIteration) ForIteration = EsExpressionFactory.Create(forIteration);
         
         ForInit = EsStatementFactory.Create(forInit);
         ForCondition = EsExpressionFactory.Create(forCondition);
-        ForIteration = EsExpressionFactory.Create(forIteration);
+        
         if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
             foreach (var statement in statementBlock.statement()) Statements.Add(EsStatementFactory.Create(statement));
             return this;
@@ -35,8 +35,9 @@ public class EsForStatement : IEsStatement , IEsDeserializable<Generated.Enforce
     }
     public override string ToString() => ToEnforce();
     public string ToEnforce() {
-        var builder = new StringBuilder("for (").Append(ForInit.ToEnforce()).Append(ForCondition.ToEnforce())
-            .Append("; ").Append(ForIteration.ToEnforce()).Append(") ");
+        var builder = new StringBuilder("for (").Append(ForInit.ToEnforce()).Append(ForCondition.ToEnforce()).Append("; ");
+        if (ForIteration is not null) builder.Append(ForIteration.ToEnforce());
+        builder.Append(") ");
         if (Statements.Count == 1) {
             builder.Append(Statements[0].ToEnforce());
         } else {

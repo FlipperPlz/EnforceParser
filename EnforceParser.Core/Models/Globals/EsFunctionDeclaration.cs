@@ -30,12 +30,12 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
         if (ctx.returnType.GetText() != "void") ReturnType = (EsClassReference?)new EsClassReference().FromParseRule(ctx.returnType);
         if (ctx.deconstructor is not null) Deconstructor = true;
         if (ctx.functionName is null) throw new Exception();
-        if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) throw new Exception();
         if (ctx.functionParameters() is null) throw new Exception();
         FunctionName = (EsFunctionName) new EsFunctionName().FromParseRule(ctx.functionName);
 
         foreach (var param in ctx.functionParameters().functionParameter()) FunctionParameters.Add((EsFunctionDeclarationParameter)new EsFunctionDeclarationParameter().FromParseRule(param));
-        
+        if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) return this;
+
         if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
             FunctionBody = new();
             foreach (var statement in statementBlock.statement()) FunctionBody.Add(EsStatementFactory.Create(statement));

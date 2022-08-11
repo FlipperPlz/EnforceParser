@@ -505,6 +505,18 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitContinueStatement([NotNull] EnforceParser.ContinueStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.lambdaStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLambdaStatement([NotNull] EnforceParser.LambdaStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.lambdaStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLambdaStatement([NotNull] EnforceParser.LambdaStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.forControl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

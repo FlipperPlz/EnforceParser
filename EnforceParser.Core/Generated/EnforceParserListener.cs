@@ -422,6 +422,16 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitContinueStatement([NotNull] EnforceParser.ContinueStatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.lambdaStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLambdaStatement([NotNull] EnforceParser.LambdaStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.lambdaStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLambdaStatement([NotNull] EnforceParser.LambdaStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.forControl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
