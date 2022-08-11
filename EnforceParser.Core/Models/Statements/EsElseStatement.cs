@@ -8,10 +8,6 @@ public class EsElseStatement : IEsStatement, IEsDeserializable<Generated.Enforce
     
     public IEsDeserializable<Generated.EnforceParser.ElseStatementContext> FromParseRule(Generated.EnforceParser.ElseStatementContext ctx) {
         if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) throw new Exception();
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            foreach (var statement in statementBlock.statement()) Statements.Add(EsStatementFactory.Create(statement));
-            return this;
-        }
         if (statementSingleOrBlock.statement() is { }) {
             Statements.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));
             return this;

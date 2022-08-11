@@ -36,11 +36,6 @@ public class EsFunctionDeclaration : IEsGlobalStatement, IEsDeserializable<Gener
         foreach (var param in ctx.functionParameters().functionParameter()) FunctionParameters.Add((EsFunctionDeclarationParameter)new EsFunctionDeclarationParameter().FromParseRule(param));
         if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) return this;
 
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            FunctionBody = new();
-            foreach (var statement in statementBlock.statement()) FunctionBody.Add(EsStatementFactory.Create(statement));
-            return this;
-        }
         if (statementSingleOrBlock.statement() is { }) {
             FunctionBody = new();
             FunctionBody.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));

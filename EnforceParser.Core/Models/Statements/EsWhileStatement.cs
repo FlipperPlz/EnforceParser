@@ -13,10 +13,6 @@ public class EsWhileStatement : IEsStatement, IEsDeserializable<Generated.Enforc
         if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) throw new Exception();
 
         Condition = (EsParenthesisedExpression) new EsParenthesisedExpression().FromParseRule(ctx.parenthesisedExpression());
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            foreach (var statement in statementBlock.statement()) Statements.Add(EsStatementFactory.Create(statement));
-            return this;
-        }
         if (statementSingleOrBlock.statement() is { }) {
             Statements.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));
             return this;

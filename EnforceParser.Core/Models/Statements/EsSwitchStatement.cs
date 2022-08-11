@@ -45,10 +45,6 @@ public class EsDefaultSwitchCase : IEsSwitchCase, IEsDeserializable<Generated.En
             CaseBody.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));
             return this;
         }
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            foreach (var statement in statementBlock.statement()) CaseBody.Add(EsStatementFactory.Create(statement));
-            return this;
-        }
 
         throw new Exception();
     }
@@ -83,10 +79,6 @@ public class EsSwitchCase : IEsSwitchCase, IEsDeserializable<Generated.EnforcePa
         if (ctx.statementSingleOrBlock() is not { } statementSingleOrBlock) throw new Exception();
         if (statementSingleOrBlock.statement() is { }) {
             CaseBody.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));
-            return this;
-        }
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            foreach (var statement in statementBlock.statement()) CaseBody.Add(EsStatementFactory.Create(statement));
             return this;
         }
 

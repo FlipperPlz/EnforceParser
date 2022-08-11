@@ -15,10 +15,6 @@ public class EsIfStatement : IEsStatement, IEsDeserializable<Generated.EnforcePa
         if (ctx.parenthesisedExpression() is not { } condition) throw new Exception();
         Condition = (EsParenthesisedExpression) new EsParenthesisedExpression().FromParseRule(condition);
         if (ctx.elseStatement() is { } @else) ElseStatement = (EsElseStatement) new EsElseStatement().FromParseRule(@else);
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            foreach (var statement in statementBlock.statement()) Statements.Add(EsStatementFactory.Create(statement));
-            return this;
-        }
         if (statementSingleOrBlock.statement() is { }) {
             Statements.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));
             return this;

@@ -79,7 +79,7 @@ optionalParameter: argumentName=identifier Colon argumentValue=expression;
 arrayIndexExpression: identifier arrayIndex*;
 
 //Notice: Statements go under here
-statementSingleOrBlock: statement | statementBlock;
+statementSingleOrBlock: statement;
 statementBlock: emptyBlock | LCurly statement* RCurly;
 statement:   expressionaryStatement = expression Semicolon          |
              esVariableDeclaration  = variableDeclaration           |

@@ -18,10 +18,6 @@ public class EsForEachStatement : IEsStatement , IEsDeserializable<Generated.Enf
         foreach (var variable in ctx.foreachVariable()) IteratingVariables.Add((EsForEachVariable) new EsForEachVariable().FromParseRule(variable));
         
         Enumerable = EsExpressionFactory.Create(ctx.expression());
-        if (statementSingleOrBlock.statementBlock() is { } statementBlock) {
-            foreach (var statement in statementBlock.statement()) Statements.Add(EsStatementFactory.Create(statement));
-            return this;
-        }
         if (statementSingleOrBlock.statement() is { }) {
             Statements.Add(EsStatementFactory.Create(statementSingleOrBlock.statement()));
             return this;
