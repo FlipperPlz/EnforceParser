@@ -19,6 +19,7 @@ public static class EsStatementFactory {
         if (ctx.esDelete is { } delete) return (IEsStatement) new EsDeleteStatement().FromParseRule(delete);
         if (ctx.esStatementBlock is { } block) return (IEsStatement) new EsBlockStatement().FromParseRule(block);
         if (ctx.esLambda is { } lambda) return (IEsStatement)new EsLambdaDeclaration().FromParseRule(lambda);
+        if (ctx.esThread is { } thread) return (IEsStatement)new EsThreadStatement().FromParseRule(thread);
         if (ctx.esVariableDeclaration is { } variableDeclaration) return (IEsStatement) new EsVariableDeclarationStatement().FromParseRule(variableDeclaration);
         throw new Exception("The rule you have tried to call is not supported by the serialization base.");
     }

@@ -2,6 +2,7 @@
 using EnforceParser.Core.Factories;
 using EnforceParser.Core.Models.Expression;
 using EnforceParser.Core.Models.Expression.Primary.Primitives;
+using EnforceParser.Core.Models.Modifiers;
 using EnforceParser.Core.Models.Scope;
 
 namespace EnforceParser.Core.Models.Statements; 
@@ -42,18 +43,28 @@ public class EsForEachStatement : IEsStatement , IEsDeserializable<Generated.Enf
 }
 
 public class EsForEachVariable : IEsDeserializable<Generated.EnforceParser.ForeachVariableContext> {
+    public List<EsVariableModifier> VariableModifiers { get; set; } = new();
     public EsClassReference VariableType { get; set; }
     public EsVariableName VariableNameName { get; set; }
     
     public IEsDeserializable<Generated.EnforceParser.ForeachVariableContext> FromParseRule(Generated.EnforceParser.ForeachVariableContext ctx) {
         if (ctx.iteratedVariableType is not { } variableType) throw new Exception();
         if (ctx.iteratedVariableName is not { } variableName) throw new Exception();
-
+        if (ctx.variableModifier() is { } modifiers) {
+            foreach (var modifierCtx in modifiers) {
+                var modifierText = string.Concat(modifierCtx.GetText()[0].ToString().ToUpper(), modifierCtx.GetText().AsSpan(1));
+                if (Enum.TryParse(modifierText, out EsVariableModifier modifier)) VariableModifiers.Add(modifier);
+                else throw new Exception($"Failed to parse variable modifier from \"{modifierText}\".");
+            }
+        }
         VariableType = (EsClassReference) new EsClassReference().FromParseRule(variableType);
         VariableNameName = (EsVariableName) new EsVariableName().FromParseRule(variableName);
         return this;
     }
 
-    public string ToEnforce() => new StringBuilder(VariableType.ToEnforce()).Append(' ')
-        .Append(VariableNameName.ToEnforce()).ToString();
+    public string ToEnforce() {
+        var builder = new StringBuilder();
+        if (VariableModifiers.Count > 0) builder.Append(string.Join(' ', VariableModifiers.Select(m => Enum.GetName(m)!.ToLower()))).Append(' ');
+        return builder.Append(VariableType.ToEnforce()).Append(' ').Append(VariableNameName.ToEnforce()).ToString();
+    }
 }

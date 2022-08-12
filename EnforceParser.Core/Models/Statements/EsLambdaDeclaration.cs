@@ -16,7 +16,7 @@ public class EsLambdaDeclaration : IEsStatement, IEsDeserializable<Generated.Enf
         LambdaType = (EsClassReference)new EsClassReference().FromParseRule(ctx.lambdaType);
         LambdaName = (EsVariableName)new EsVariableName().FromParseRule(ctx.lambdaName);
         if (ctx.lambdaArguments is not {} argumentCtx) throw new Exception();
-        if (argumentCtx.functionCallParameterList() is not {} argumentListCtx) throw new Exception();
+        if (argumentCtx.functionCallParameterList() is not {} argumentListCtx) return this;
 
         foreach (var parameter in argumentListCtx.functionCallParameter()) {
             if (parameter.optionalParameter() is { }) {

@@ -325,18 +325,6 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOptionalParameter([NotNull] EnforceParser.OptionalParameterContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.statementSingleOrBlock"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -372,6 +360,18 @@ public partial class EnforceParserBaseListener : IEnforceParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] EnforceParser.StatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.threadStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterThreadStatement([NotNull] EnforceParser.ThreadStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.threadStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitThreadStatement([NotNull] EnforceParser.ThreadStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.gotoStatement"/>.
 	/// <para>The default implementation does nothing.</para>

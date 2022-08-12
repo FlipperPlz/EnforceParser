@@ -10,15 +10,16 @@
         <PackageLicenseUrl>https://github.com/FlipperPlz/EnforceParser/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/FlipperPlz/EnforceParser</RepositoryUrl>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <FileVersion>1.0.1</FileVersion>
+        <AssemblyVersion>1.0.2</AssemblyVersion>
+        <FileVersion>1.0.2</FileVersion>
         <NeutralLanguage>en</NeutralLanguage>
         <AssemblyOriginatorKeyFile>RyannsTools.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <TargetFrameworks>net6.0;net6.0-windows;net7.0</TargetFrameworks>
-        <PackageVersion>1.0.1</PackageVersion>
+        <PackageVersion>1.0.2</PackageVersion>
         <SignAssembly>true</SignAssembly>
+        <PackageIcon>pkgicon.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,6 +28,8 @@
 
     <ItemGroup>
       <None Include="..\pkgicon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
         <Link>pkgicon.png</Link>
       </None>
       <None Include="..\RyannsTools.snk">

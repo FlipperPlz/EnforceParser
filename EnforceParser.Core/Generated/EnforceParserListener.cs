@@ -272,16 +272,6 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitOptionalParameter([NotNull] EnforceParser.OptionalParameterContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EnforceParser.arrayIndexExpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitArrayIndexExpression([NotNull] EnforceParser.ArrayIndexExpressionContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.statementSingleOrBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -311,6 +301,16 @@ public interface IEnforceParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] EnforceParser.StatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EnforceParser.threadStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterThreadStatement([NotNull] EnforceParser.ThreadStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EnforceParser.threadStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitThreadStatement([NotNull] EnforceParser.ThreadStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EnforceParser.gotoStatement"/>.
 	/// </summary>

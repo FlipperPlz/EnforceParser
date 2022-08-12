@@ -28,11 +28,11 @@ expression:  primaryExpression                                                  
              expression op=Dot
                 (
                  esVariable    = identifier            |
-                 esArrayIndex  = arrayIndexExpression  |
                  esFunction    = functionCall
                 )                                                                         |
              objectCreation                                                               |
              castExpression                                                               |
+             expression arrayIndex                                              |
              expression suffix=(Increment | Decrement)                                    |
              prefix=(Increment | Decrement | Bang | BitwiseNot | Add | Subtract) expression            |
              expression op=(Multiply | Divide | Modulo) expression                        |
@@ -56,7 +56,6 @@ expression:  primaryExpression                                                  
                   RShift_Assign
                  )
                  expression                                                               ;
-
 castExpression: LParenthesis cast=classReference RParenthesis expression;
 primaryExpression:  esFunction    = functionCall              |
                     esString      = literalString             |
@@ -67,8 +66,7 @@ primaryExpression:  esFunction    = functionCall              |
                     esArray       = literalArray              |
                     esNull        = literalNull               |
                     esVariable    = identifier                |
-                    esGeneric     = classReference            |
-                    esArrayIndex  = arrayIndexExpression      ;
+                    esGeneric     = classReference            ;
 objectCreation: NEW variableModifier* objectName=identifier typeList? functionCallParameters?;
 functionCall: identifier functionCallParameters (LSBracket expression? RSBracket)?;
 parenthesisedExpression: LParenthesis expression RParenthesis;
@@ -76,8 +74,6 @@ functionCallParameters: LParenthesis functionCallParameterList? RParenthesis;
 functionCallParameterList: functionCallParameter (Comma functionCallParameter)*;
 functionCallParameter: expression | optionalParameter;
 optionalParameter: argumentName=identifier Colon argumentValue=expression;
-arrayIndexExpression: identifier arrayIndex*;
-
 //Notice: Statements go under here
 statementSingleOrBlock: statement;
 statementBlock: emptyBlock | LCurly statement* RCurly;
@@ -95,7 +91,9 @@ statement:   expressionaryStatement = expression Semicolon          |
              esStatementBlock       = statementBlock                |
              esGoto                 = gotoStatement /* Unused */    |
              esLambda               = lambdaStatement               |
+             esThread               = threadStatement               |
              esSemicolon            = Semicolon                     ;
+threadStatement: THREAD functionCall;
 gotoStatement: GOTO expression Semicolon;
 ifStatement: IF condition=parenthesisedExpression ifBody=statementSingleOrBlock elseStatement?;
 elseStatement: ELSE elseBody=statementSingleOrBlock;
@@ -120,7 +118,7 @@ literalInteger: LiteralInteger;
 literalNull: NULL;
 literalFloat: LiteralFloat; //TODO: Scientific Notation
 literalBoolean: LiteralBoolean;
-foreachVariable: iteratedVariableType=classReference iteratedVariableName=identifier;
+foreachVariable: variableModifier* iteratedVariableType=classReference iteratedVariableName=identifier;
 switchLabel: CASE (expression) Colon (statement* | statementSingleOrBlock); 
 defaultSwitchLabel: DEFAULT Colon (statement* | statementSingleOrBlock);
 switchBlockStatementGroup: switchLabel | defaultSwitchLabel;
@@ -133,7 +131,7 @@ genericType: variableModifier* type=classReference ;
 genericTypeDeclarationList:  Less genericTypeDeclaration (Comma genericTypeDeclaration)* Greater;
 genericTypeDeclaration: variableModifier* type=classReference typeName=identifier  (LSBracket RSBracket)?; 
 annotation: LSBracket functionCall RSBracket;
-classReference: classname=identifier typeList? arrayIndex*;
+classReference: classname=identifier typeList?;
 leftShift: Less Less;
 rightShift: Greater Greater;
 //SECTION: Modifiers
